@@ -1,0 +1,2103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uriah and Alana Practice Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400&display=swap"
+    />
+    <link rel="stylesheet" href="hark.css" />
+    <link rel="stylesheet" href="hark-hero.css" />
+    <style>
+      .x-banner { font: var(--type-label); color: var(--text-primary); border: 1px solid var(--fill-system-red); border-radius: var(--r-m); padding: 12px 16px; margin-bottom: 16px; }
+      .x-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin: 12px 0; }
+      .x-progress { height: 6px; border-radius: var(--r-pill); background: var(--fill-tertiary); overflow: hidden; margin: 12px 0 20px; }
+      .x-progress > span { display: block; height: 100%; background: var(--fill-primary); transition: width var(--dur-quick) var(--ease-out); }
+      .x-passage { border: 1px solid var(--stroke-primary); border-radius: var(--r-m); padding: 12px 16px; margin-bottom: 20px; background: var(--fill-tertiary); }
+      .x-passage summary { font: var(--type-body-strong); cursor: pointer; min-height: var(--tap); display: flex; align-items: center; }
+      .x-passage p { font: var(--type-body); color: var(--text-primary); margin: 0 0 12px; max-width: 68ch; }
+      .x-passage small { display: block; font: var(--type-small); color: var(--text-secondary); margin-bottom: 8px; }
+      .x-prompt { font: var(--type-heading); color: var(--text-primary); margin: 0 0 16px; white-space: pre-line; }
+      .x-opts { display: grid; gap: 8px; margin: 0 0 20px; padding: 0; list-style: none; }
+      .x-opt { display: flex; gap: 12px; align-items: flex-start; width: 100%; text-align: left; min-height: var(--tap); padding: 12px 16px; border: 1px solid var(--stroke-primary); border-radius: var(--r-m); background: var(--fill-primary-on); color: var(--text-primary); font: var(--type-body); cursor: pointer; }
+      .x-opt b { flex: none; width: 24px; height: 24px; border-radius: var(--r-pill); border: 1px solid var(--stroke-primary); display: grid; place-items: center; font: var(--type-tag); }
+      .x-opt[aria-pressed="true"] { background: var(--fill-primary); color: var(--text-primary-on); border-color: var(--fill-primary); }
+      .x-opt[aria-pressed="true"] b { border-color: var(--text-primary-on); }
+      .x-input, .x-text { width: 100%; box-sizing: border-box; font: var(--type-body); color: var(--text-primary); background: var(--fill-primary-on); border: 1px solid var(--stroke-primary); border-radius: var(--r-m); padding: 12px 16px; min-height: var(--tap); margin-bottom: 8px; }
+      .x-text { min-height: 320px; resize: vertical; }
+      .x-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 6px; margin: 16px 0; }
+      .x-grid button { min-height: var(--tap); border-radius: var(--r-s); border: 1px solid var(--stroke-primary); background: var(--fill-primary-on); color: var(--text-primary); font: var(--type-label); cursor: pointer; }
+      .x-grid button.is-ans { background: var(--fill-tertiary); }
+      .x-grid button.is-cur { border: 2px solid var(--fill-primary); }
+      .x-review { border-top: 1px solid var(--stroke-secondary); padding: 20px 0; }
+      .x-review h3 { font: var(--type-body-strong); margin: 0 0 8px; white-space: pre-line; }
+      .x-review p { font: var(--type-body); margin: 0 0 8px; max-width: 68ch; }
+      .x-review .aside { margin-top: 12px; }
+      .x-more { margin-top: 16px; }
+      .x-more summary { font: var(--type-body-strong); cursor: pointer; min-height: var(--tap); display: flex; align-items: center; }
+      .x-modal { border: 1px solid var(--stroke-primary); border-radius: var(--r-l); padding: 24px; max-width: min(640px, 92vw); max-height: 85vh; background: var(--fill-primary-on); color: var(--text-primary); }
+      .x-modal::backdrop { background: rgb(0 0 0 / 0.4); }
+      .x-modal h3 { font: var(--type-body-strong); margin: 16px 0 4px; }
+      .x-modal ul { margin: 0; padding-left: 18px; font: var(--type-body); }
+      .x-check { display: flex; gap: 12px; align-items: flex-start; font: var(--type-body); padding: 10px 0; border-bottom: 1px solid var(--stroke-secondary); min-height: var(--tap); cursor: pointer; }
+      .x-check input { width: 20px; height: 20px; margin-top: 2px; flex: none; }
+      .x-traits { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 4px; }
+      .x-traits label { display: inline-flex; gap: 6px; align-items: center; min-height: var(--tap); padding: 0 14px; border: 1px solid var(--stroke-primary); border-radius: var(--r-pill); font: var(--type-label); cursor: pointer; }
+      .x-traits label:has(input:checked) { background: var(--fill-primary); color: var(--text-primary-on); }
+      .x-traits input { position: absolute; opacity: 0; pointer-events: none; }
+      .x-start { display: grid; gap: 8px; grid-template-columns: 1fr 1fr; margin-top: 20px; max-width: 420px; }
+      .x-start .btn { justify-content: center; min-height: 52px; }
+      button.btn { cursor: pointer; font: inherit; }
+      .x-tts { display: inline-flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+      .x-tts-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 12px; }
+      .x-tts-note { margin: 0 0 12px; max-width: 60ch; }
+    </style>
+  <link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#1f3a5f" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+</head>
+  <body>
+    <div class="page" id="top">
+      <main class="main">
+        <div id="banner" class="x-banner" role="alert" hidden>Saving is blocked in this browser. Before you stop, tap Backup code and save it in your notes.</div>
+        <div id="app"></div>
+
+        <section class="section" id="about" data-nav="About">
+          <div class="head">
+            <p class="head__eyebrow">About the real tests</p>
+            <h2>Montana accepts both the GED and the HiSET.</h2>
+          </div>
+          <div class="cards">
+            <div>
+              <h3>GED</h3>
+              <ul>
+                <li>4 tests</li>
+                <li>Pass with 145 on each</li>
+                <li>Can be taken online at home with state approval</li>
+              </ul>
+            </div>
+            <div>
+              <h3>HiSET</h3>
+              <ul>
+                <li>5 tests, scored 1 to 20</li>
+                <li>Need 8+ on each, 2+ on the essay, and 45 total</li>
+                <li>In person only: at-home HiSET ended in Montana Sept 1, 2025</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Free prep classes</h3>
+              <p>FVCC Adult Education</p>
+              <p><a class="link" href="tel:+14067563884">(406) 756-3884</a></p>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer class="foot">
+        <p>Practice questions for Uriah and Alana. Progress is saved on this device only.</p>
+        <a class="badge" href="https://hark.com/" target="_blank" rel="noopener"><span class="hark-mark"></span><span>built by hark</span></a>
+      </footer>
+    </div>
+    <dialog class="x-modal" id="modal"></dialog>
+    <script src="hark.js"></script>
+    <script>
+      const QB = {
+  "title": "High School Equivalency Practice Question Bank (GED / HiSET style)",
+  "version": "1.0",
+  "created": "2026-11-11",
+  "audience": "Adult learners in Montana preparing for the high school equivalency test (GED or HiSET).",
+  "disclaimer": "All passages and questions are original practice material written to mirror the content areas and question styles of the GED and HiSET exams as of 2025-2026. They are not official test items and are not affiliated with or endorsed by GED Testing Service or ETS/PSI.",
+  "sections": [
+    {
+      "id": "reading",
+      "title": "Reading (HiSET Reading / GED RLA Reading)",
+      "minutes": 40,
+      "instructions": "Read each passage carefully, then answer the four questions that follow it. Choose the best answer based on what the passage states or implies. You may look back at the passage as often as you like. 16 questions, suggested time 40 minutes.",
+      "passages": [
+        {
+          "id": "R1",
+          "title": "The Last Cutting (literary fiction)",
+          "text": "The baler had been broken for three days when Nora finally drove home. She saw it from the county road: the red machine sitting in the middle of the south field like a dropped toy, the windrows of cut hay going gray around it. Her father would never have left hay on the ground that long. Not the father she remembered.\n\nHe was in the shop when she pulled in, bent over a workbench crowded with coffee cans of bolts. He did not look up right away. “Knotter’s shot,” he said, as if she had been gone an afternoon instead of six years. “Part’s coming from Billings. Thursday, maybe.”\n\n“Rain’s coming Wednesday,” Nora said.\n\n“I can read a forecast.”\n\nShe set her bag on the floor and looked at his hands. They were the same hands that had taught her to splice a rope and to back a trailer through a gate with an inch to spare, but now they shook slightly as he sorted the bolts, and he sorted them twice.\n\nAt supper he told her about the sale. A developer out of Bozeman had offered more for the place than her grandfather had earned in his whole life. Her father said the number flatly, the way he might read a feed bill. “It’s a good offer,” he said. “Your mother would have said take it.”\n\n“Is that what you want?”\n\nHe pushed a piece of potato across his plate. “What I want is for the baler to work.”\n\nThe next morning Nora was in the shop before sunrise. She had not touched a knotter since high school, but the diagram was still taped inside the cabinet door, softened and brown at the edges, with her own pencil notes in the margin. By ten she had found the problem: not the knotter at all, but a sheared pin that cost forty cents. By noon the baler was thumping its way down the first windrow.\n\nHer father watched from the porch. When she came in for water, he was holding the old diagram, studying her handwriting.\n\n“You kept that,” she said.\n\n“I kept a lot of things.” He folded the paper carefully along its old creases. “We could get the north field done before Wednesday. If you’re staying.”\n\nNora drank her water slowly. Outside, the sky over the mountains was still clear, but she could see clouds stacking up in the west."
+        },
+        {
+          "id": "R2",
+          "title": "Partners in the High Country (informational science article)",
+          "text": "High on the windswept ridges of the northern Rockies, where few trees can survive, the whitebark pine has stood for centuries. Its twisted trunks shade snowbanks that melt slowly into summer streams, and its large, fat-rich seeds feed grizzly bears, red squirrels, and many kinds of birds. Yet the tree has a curious problem: its cones do not open on their own. The seeds stay locked inside unless an animal pries them out.\n\nThat animal is usually the Clark’s nutcracker, a gray-and-black relative of the jay. Each fall, a single nutcracker may harvest tens of thousands of seeds, carrying around 100 at a time in a pouch beneath its tongue. It buries them in small groups, called caches, sometimes miles from the parent tree. Over the winter and spring the bird returns to dig them up, relying on a remarkable spatial memory. Researchers estimate, however, that nutcrackers never recover a significant share of the seeds they hide. Those forgotten seeds, planted at just the right depth, are the main way new whitebark pines get started.\n\nThe relationship is a classic example of mutualism, an interaction in which both species benefit. The bird gets a dependable, high-energy food supply; the tree gets a gardener that plants its seeds far from the shade and competition of the parent.\n\nToday, this partnership is under strain. White pine blister rust, a fungus accidentally brought to North America from Europe in the early 1900s, kills whitebark pines by spreading through their bark and cutting off the flow of nutrients. Outbreaks of mountain pine beetles, helped along by warmer winters that fail to kill the insects’ larvae, have killed many more trees. In parts of the northern Rockies, most mature whitebark pines are now dead. In 2022, the U.S. Fish and Wildlife Service listed the species as threatened under the Endangered Species Act.\n\nFewer living trees mean fewer cones, and when cone crops fail, nutcrackers may leave an area entirely. Without the birds, even healthy trees have little chance of reproducing, which leads to still fewer trees. Scientists call this kind of self-reinforcing downward spiral a feedback loop.\n\nForest managers are fighting back. They collect seeds from trees that have survived years of blister rust exposure, since some individuals carry natural genetic resistance. Seedlings grown from these trees are planted on burned or open slopes. The work is slow, because a whitebark pine may take several decades to produce its first cones, but each resistant seedling is a bet on the forest a century from now."
+        },
+        {
+          "id": "R3",
+          "title": "Address to a Territorial Constitutional Convention (historical / founding-document style)",
+          "text": "[An original practice passage written in the style of a nineteenth-century speech. The speaker and convention are fictional.]\n\nMr. President, and fellow delegates:\n\nWe have been sent here not to make laws, but to make the frame within which all future laws must stand. A statute may be repealed at the next session; a constitution, if we build it well, will outlast every man in this hall. I ask you, therefore, to remember that we write not for ourselves but for our grandchildren, whose faces we will never see.\n\nIt is said by some gentlemen that the people of this territory are too few and too scattered to govern themselves, and that the wiser course is to leave great matters in the hands of those with the capital to develop our mines and railroads. I do not doubt the value of capital. Our mountains hold copper and silver that no miner with a pick and pan could ever reach alone. But I have read the history of other states, and I have seen what becomes of a legislature that owes its existence to the companies it is meant to regulate. Such a body does not govern; it obeys.\n\nAll political power is inherent in the people, and all just government is founded upon their consent and instituted for their good. These are not new words, nor are they mine. Our fathers pledged their lives to them at Lexington and set them down in ink at Philadelphia. If they were true in 1776, they are true in this territory today, though our towns be young and our roads but wagon ruts.\n\nI propose, therefore, three safeguards. First, that no corporation shall hold any public office or exercise any power of government, directly or through any agent. Second, that the legislature shall establish and maintain a system of free public schools, open to all children of the state, for a people who cannot read cannot long remain free. Third, that this constitution may be amended only by a vote of the people themselves, so that no future legislature, however tempted, may quietly undo what we do here.\n\nSome will call these measures hostile to progress. I call them the price of liberty. A railroad may carry our ore to market, but it cannot carry our freedom; that we must carry ourselves. Let us build a house strong enough that no single owner can ever claim the keys."
+        },
+        {
+          "id": "R4",
+          "title": "Five Days Is Worth Keeping (persuasive editorial)",
+          "text": "Across rural Montana, more school districts are trading the traditional five-day week for a four-day schedule. Supporters say the change saves money and helps small districts hire teachers. Those are real problems. But before our district joins the trend, the school board should look hard at what the shorter week costs the people it is supposed to serve: our children.\n\nStart with learning time. Four-day districts usually lengthen each school day to make up the hours, but a seven-year-old does not learn much in the last forty minutes of a long afternoon. Teachers I have spoken with describe those final periods as the hardest of the day to fill with real instruction. Several studies of four-day schools in other states have found small but measurable drops in achievement, especially in math, compared with similar five-day schools.\n\nThen consider the fifth day itself. For families with two working parents, Friday does not disappear; it becomes a child-care bill. Parents who can afford a sitter or have a relative nearby will manage. Parents who cannot will leave younger children with older siblings or, too often, alone. A schedule that works well for comfortable households and poorly for struggling ones is not neutral.\n\nFinally, the savings are smaller than they sound. Districts that have switched often find that their budgets shrink by only a few percent, because the largest costs, such as salaries, buildings, and heat, do not drop much when the doors close one day a week.\n\nSuperintendent Dale Harmon argues that the four-day week is the only way to attract teachers to a town two hours from the nearest mall. “Young teachers want that extra day,” he told the board last month. “Without it, we lose them to Billings.” His concern is sincere, and the teacher shortage is real. But there are better tools: housing assistance, student-loan repayment, and higher starting pay funded by the state. These address the shortage without shrinking our children’s school week.\n\nOur district has served this community for more than a century on a five-day schedule. Change for its own sake is no virtue. Until the board can show that a four-day week will help students learn, and not just help the budget balance, five days is worth keeping."
+        }
+      ],
+      "questions": [
+        {
+          "id": "RD1",
+          "type": "mc",
+          "prompt": "Based on the passage, what can most reasonably be inferred about why the hay has been left lying in the field?",
+          "choices": [
+            "The father has already decided to sell and no longer cares what happens to the crop.",
+            "The father is struggling, physically and emotionally, to keep up with the farm work the way he once did.",
+            "The father is waiting on purpose so that Nora will have a reason to come home.",
+            "The father believes the forecast is wrong and that no rain is coming."
+          ],
+          "answer": 1,
+          "explanation": "Clues add up: Nora says the father she remembered would never leave hay down that long, his hands shake, and he sorts the bolts twice. The trap is the sale: he says, “What I want is for the baler to work,” which shows he still cares about the crop.",
+          "study_topic": "Making inferences",
+          "study_note": "An inference is a conclusion the text supports but does not state outright. Combine several clues rather than relying on one, and reject any choice the text contradicts. For example, if a character sorts the same bolts twice and his hands shake, you can infer he is aging or distracted, even though the author never says “he is getting old.” Always be able to point to the words that support your inference."
+        },
+        {
+          "id": "RD2",
+          "type": "mc",
+          "prompt": "In paragraph 6, the narrator says her father “said the number flatly, the way he might read a feed bill.” As used here, “flatly” most nearly means",
+          "choices": [
+            "in a loud, angry voice",
+            "with obvious pride",
+            "in a hopeful tone",
+            "without showing emotion"
+          ],
+          "answer": 3,
+          "explanation": "The comparison to reading a feed bill, a routine and dull task, signals that he states a life-changing offer with no feeling in his voice. “With obvious pride” is the trap: the offer is large, but nothing in his delivery shows pride.",
+          "study_topic": "Vocabulary in context",
+          "study_note": "Test questions often use common words with a less common meaning, so the answer must fit the sentence, not just the dictionary. Look for nearby clues such as comparisons, contrasts, or examples. For instance, in “She answered flatly, as if reading a grocery list,” the comparison tells you “flatly” means without emotion, not “on a level surface.” Plug your choice back into the sentence to check it."
+        },
+        {
+          "id": "RD3",
+          "type": "mc",
+          "prompt": "The old repair diagram mainly serves to",
+          "choices": [
+            "reveal a lasting bond between Nora and her father that neither of them has openly expressed",
+            "explain the technical steps needed to repair a hay baler",
+            "prove that Nora is a more skilled mechanic than her father",
+            "show that the father plans to hand the ranch over to Nora"
+          ],
+          "answer": 0,
+          "explanation": "The diagram holds Nora’s own notes, and her father kept it, studies her handwriting, and says, “I kept a lot of things,” hinting at feelings he does not state. Choosing the ranch-handover option goes too far, because nothing in the passage says he plans to give her the ranch.",
+          "study_topic": "Symbols and details in fiction",
+          "study_note": "Authors often use an object to carry feelings that characters will not say aloud. Ask why the author lingers on the object and how characters react to it. For example, a father carefully folding his daughter’s old school paper suggests love and memory, even if he never says “I missed you.” Avoid answers that read more into the symbol than the text supports."
+        },
+        {
+          "id": "RD4",
+          "type": "mc",
+          "prompt": "What does the final paragraph most strongly suggest?",
+          "choices": [
+            "Nora has decided to leave before the storm arrives.",
+            "The storm will destroy the remaining hay in the north field.",
+            "Nora is weighing her father’s invitation as trouble approaches, and her decision is left unresolved.",
+            "Nora’s father has decided not to sell the ranch."
+          ],
+          "answer": 2,
+          "explanation": "Nora drinks “slowly” after her father asks if she is staying, and clouds are “stacking up,” so pressure is building but no choice is made. The other choices state outcomes the passage never reveals; the ending is deliberately open.",
+          "study_topic": "Endings and theme",
+          "study_note": "Many literary passages end without resolving the conflict, and the test rewards you for noticing that. Look at actions, pacing, and setting in the last lines; weather and light often mirror a character’s situation. For example, “She looked at the road, then back at the house” suggests indecision rather than a decision. Reject answers that claim more certainty than the ending gives."
+        },
+        {
+          "id": "RD5",
+          "type": "mc",
+          "prompt": "Which statement best expresses the central idea of the passage?",
+          "choices": [
+            "Clark’s nutcrackers have the strongest memory of any bird in the Rocky Mountains.",
+            "Blister rust is the most dangerous plant disease in North America.",
+            "The whitebark pine depends on the Clark’s nutcracker to reproduce, and threats to the tree are putting this partnership at risk.",
+            "Forest managers have solved the problem of whitebark pine decline."
+          ],
+          "answer": 2,
+          "explanation": "The passage explains the mutualism, then describes how disease and beetles threaten it, then describes efforts to help; the central idea must cover that whole arc. The other choices are either details or claims the passage never makes (it calls the restoration work slow, not solved).",
+          "study_topic": "Central idea",
+          "study_note": "The central idea is the point the whole passage develops, not a single detail. A good test: does the choice fit the beginning, middle, and end? For example, an article about bees that covers pollination, colony collapse, and beekeeping programs has a central idea like “Bees are vital pollinators facing serious threats,” not “Bees can fly up to 15 mph.” Watch for choices that are too narrow or too extreme."
+        },
+        {
+          "id": "RD6",
+          "type": "mc",
+          "prompt": "In paragraph 3, the author calls the relationship “a classic example of mutualism.” As used here, “classic” most nearly means",
+          "choices": [
+            "typical and widely recognized",
+            "old-fashioned and outdated",
+            "elegant and stylish",
+            "related to ancient Greece and Rome"
+          ],
+          "answer": 0,
+          "explanation": "The author is saying this is a standard, often-cited case that clearly shows what mutualism is. The other meanings of “classic” exist, but none fits a sentence about a scientific example.",
+          "study_topic": "Vocabulary in context",
+          "study_note": "Multiple-meaning words are a favorite target on reading tests. Decide what the sentence is doing; here it is defining a science term with an example, so “classic” means a typical, textbook case. Another example: “a classic mistake” means a common, well-known mistake, not an old one. Substitute each choice into the sentence to see which keeps the meaning."
+        },
+        {
+          "id": "RD7",
+          "type": "mc",
+          "prompt": "Which detail from the passage best supports the claim that the relationship benefits the tree?",
+          "choices": [
+            "“Its large, fat-rich seeds feed grizzly bears, red squirrels, and many kinds of birds.”",
+            "“Each fall, a single nutcracker may harvest tens of thousands of seeds.”",
+            "“Over the winter and spring the bird returns to dig them up, relying on a remarkable spatial memory.”",
+            "“Those forgotten seeds, planted at just the right depth, are the main way new whitebark pines get started.”"
+          ],
+          "answer": 3,
+          "explanation": "Only this sentence shows the tree gaining something, new trees growing from seeds the bird plants. The other details show animals benefiting from the seeds, which is the opposite direction of the claim.",
+          "study_topic": "Citing textual evidence",
+          "study_note": "For evidence questions, first restate the claim in your own words, then find the quote that proves exactly that claim. A quote can be true and on-topic but still support a different point. For example, to support “exercise helps sleep,” a line about runners sleeping deeper works; a line about running being popular does not. Match the direction of the claim carefully."
+        },
+        {
+          "id": "RD8",
+          "type": "mc",
+          "prompt": "Based on the passage, which situation would most likely make the feedback loop described in paragraph 5 worse?",
+          "choices": [
+            "Forest managers plant rust-resistant seedlings on a burned slope.",
+            "A beetle outbreak kills many cone-producing trees, and nutcrackers leave the area.",
+            "Nutcrackers fail to recover a larger share of the seeds they bury.",
+            "An unusually cold winter kills most mountain pine beetle larvae."
+          ],
+          "answer": 1,
+          "explanation": "The loop is fewer trees, then fewer cones, then birds leave, then still fewer new trees; the correct choice feeds every step of it. The trap is the unrecovered seeds: forgotten seeds actually grow into new trees, so that would help the pine, not hurt it.",
+          "study_topic": "Applying information / cause and effect",
+          "study_note": "Application questions ask you to use the passage’s logic in a new situation. Trace the cause-and-effect chain step by step, then test each choice against it. For example, if a passage says drought leads to fewer grasses, which leads to fewer rabbits, then a new drought would also reduce foxes that eat rabbits. Be careful with choices that sound negative but actually help, or the reverse."
+        },
+        {
+          "id": "RD9",
+          "type": "mc",
+          "prompt": "What is the speaker’s primary purpose in this address?",
+          "choices": [
+            "To argue that the territory should delay statehood until its population grows",
+            "To describe the history of mining and railroads in the territory",
+            "To propose that corporations be banned from doing business in the new state",
+            "To persuade the delegates to adopt constitutional safeguards that keep power with the people rather than with powerful companies"
+          ],
+          "answer": 3,
+          "explanation": "The speaker proposes three safeguards and urges the delegates to adopt them to protect the people’s power. The trap is the ban on corporations: he says, “I do not doubt the value of capital,” and only wants companies kept out of government.",
+          "study_topic": "Author’s purpose",
+          "study_note": "Purpose questions ask why the author wrote the text: to persuade, inform, describe, or entertain, and about what. Look at what the author asks the audience to do, especially near the end. For example, a speech that ends “Vote yes on Measure 3” is persuasive even if it includes history. Reject choices that exaggerate the author’s position."
+        },
+        {
+          "id": "RD10",
+          "type": "mc",
+          "prompt": "Why does the speaker mention Lexington and Philadelphia in the paragraph that begins “All political power is inherent in the people”?",
+          "choices": [
+            "To remind the delegates of battles in which he personally fought",
+            "To link his principles to the founding of the United States and give them greater authority",
+            "To argue that the territory should copy the constitution of Massachusetts exactly",
+            "To warn that armed rebellion may be necessary to win statehood"
+          ],
+          "answer": 1,
+          "explanation": "He says the words are “not new” and that “our fathers” pledged their lives and wrote them down, tying his ideas to the Revolution and the Declaration of Independence. Nothing suggests he fought there or that he is calling for violence.",
+          "study_topic": "Rhetorical appeals in historical texts",
+          "study_note": "Speakers often appeal to respected history or documents to make their arguments seem trustworthy; this is an appeal to authority or shared values. When a historical reference appears, ask what it borrows: credibility, emotion, or a precedent. For example, a modern speaker quoting Lincoln on equality is borrowing Lincoln’s moral authority. Founding-document questions on the GED and HiSET often test this move."
+        },
+        {
+          "id": "RD11",
+          "type": "mc",
+          "prompt": "As used in the sentence “All political power is inherent in the people,” the word “inherent” most nearly means",
+          "choices": [
+            "borrowed from",
+            "dangerous to",
+            "naturally belonging to",
+            "unknown to"
+          ],
+          "answer": 2,
+          "explanation": "Saying political power is “inherent in the people” means it belongs to them by nature and is not given by a king or a company; the next phrase about government resting on “their consent” confirms this. “Borrowed from” reverses the meaning.",
+          "study_topic": "Vocabulary in founding documents",
+          "study_note": "Older documents use formal words that recur on the test: inherent (built in), consent (agreement), instituted (set up), redress (remedy), grievances (complaints). Use the sentence around the word: here, government is “founded upon their consent,” which only makes sense if power starts with the people. For example, “Curiosity is inherent in children” means it is a natural part of them. Learning these words pays off across the reading and social studies tests."
+        },
+        {
+          "id": "RD12",
+          "type": "mc",
+          "prompt": "Which sentence best supports the inference that the speaker believes education is necessary for self-government?",
+          "choices": [
+            "“...for a people who cannot read cannot long remain free.”",
+            "“A statute may be repealed at the next session.”",
+            "“I do not doubt the value of capital.”",
+            "“Let us build a house strong enough that no single owner can ever claim the keys.”"
+          ],
+          "answer": 0,
+          "explanation": "This line directly connects reading (education) to remaining free (self-government), explaining his free public school proposal. The other lines concern laws, business, and power in general but say nothing about education.",
+          "study_topic": "Citing textual evidence",
+          "study_note": "When asked which line supports an inference, find the quote that contains both parts of the idea, here education and freedom. A line that sounds important or memorable is not automatically the best evidence. For example, to support “the author thinks voting protects rights,” look for a sentence that mentions both voting and rights. Eliminate quotes that only touch one part."
+        },
+        {
+          "id": "RD13",
+          "type": "mc",
+          "prompt": "Which statement best summarizes the author’s main claim?",
+          "choices": [
+            "The school board should keep the five-day week unless a four-day week is shown to improve student learning.",
+            "The state should ban four-day school weeks in every district.",
+            "The superintendent is wrong that there is a teacher shortage.",
+            "Five-day school weeks cost districts less money than four-day weeks."
+          ],
+          "answer": 0,
+          "explanation": "The final paragraph states the claim directly: keep five days until the board shows a four-day week helps students learn. The trap is the teacher shortage: the author concedes that “the teacher shortage is real,” disagreeing only about the solution.",
+          "study_topic": "Identifying an argument’s claim",
+          "study_note": "An argument’s claim is the position the author wants readers to accept; it is often stated in the introduction or conclusion. Separate the claim from supporting reasons and from concessions (points the author admits). For example, “Homework has some value, but schools should limit it to 30 minutes” has the claim “limit homework,” while “has some value” is a concession. Choices that overstate the claim (statewide bans, “always”) are usually wrong."
+        },
+        {
+          "id": "RD14",
+          "type": "mc",
+          "prompt": "How does the author respond to Superintendent Harmon’s argument?",
+          "choices": [
+            "The author rejects the claim that teachers want an extra day off, citing survey results.",
+            "The author argues that hiring teachers is not the school board’s responsibility.",
+            "The author agrees that the teacher shortage is real but argues that other solutions would address it without shortening the school week.",
+            "The author agrees the four-day week is the best solution but says it should be delayed."
+          ],
+          "answer": 2,
+          "explanation": "The author calls Harmon’s concern “sincere” and the shortage “real,” then offers housing help, loan repayment, and higher pay as better tools. This is a concession followed by a counterargument; the author cites no surveys and never endorses the four-day week.",
+          "study_topic": "Comparing arguments / counterclaims",
+          "study_note": "Strong arguments acknowledge an opposing view and then answer it; this is called a counterclaim and rebuttal. When a question asks how an author responds, look for signal words like “but,” “however,” or “still” after the opposing view. For example: “Critics say solar panels are costly. However, tax credits cover a third of the price.” Identify what the author grants and what the author disputes."
+        },
+        {
+          "id": "RD15",
+          "type": "mc",
+          "prompt": "Which piece of evidence does the author use to support the claim that the savings are “smaller than they sound”?",
+          "choices": [
+            "Families with two working parents must pay for child care on the fifth day.",
+            "The largest costs, such as salaries, buildings, and heat, do not drop much when schools close one day a week.",
+            "Teachers say the final periods of a long day are the hardest to fill with real instruction.",
+            "Studies have found small drops in achievement, especially in math."
+          ],
+          "answer": 1,
+          "explanation": "The cost evidence appears in the same paragraph as the claim and explains why budgets shrink only a few percent. The other choices are real evidence from the passage, but they support different claims about families and learning.",
+          "study_topic": "Matching evidence to claims",
+          "study_note": "Persuasive essays usually give one reason per paragraph with its own evidence. To match evidence to a claim, check that the evidence explains the specific claim, not just the general topic. For example, if the claim is “electric cars are cheaper to run,” the supporting evidence is about fuel and maintenance costs, not about their quiet engines. Read the whole paragraph around the quoted claim."
+        },
+        {
+          "id": "RD16",
+          "type": "mc",
+          "prompt": "In paragraph 3, the author says the four-day schedule “is not neutral” in order to suggest that",
+          "choices": [
+            "the school board has taken sides in a political dispute",
+            "four-day schools teach material that is politically biased",
+            "the schedule has no real effect on most families",
+            "the schedule places a heavier burden on lower-income families than on wealthier ones"
+          ],
+          "answer": 3,
+          "explanation": "The sentence before it contrasts “comfortable households” that will manage with families who cannot afford a sitter; “not neutral” means the policy affects these groups unequally. The political choices misread “neutral” as being about politics.",
+          "study_topic": "Interpreting the author’s reasoning",
+          "study_note": "When a phrase sums up a paragraph, interpret it using the sentences right before it. Authors often end a paragraph with a short, pointed sentence that states the paragraph’s point. For example, after describing how a bus route skips poorer neighborhoods, a writer might say, “Convenience for some is not convenience for all.” Read that line as a conclusion drawn from the details, not as a new idea."
+        }
+      ]
+    },
+    {
+      "id": "writing",
+      "title": "Writing / Language (HiSET Writing / GED RLA Language)",
+      "minutes": 45,
+      "instructions": "Questions WR1-WR8 refer to the numbered draft letter. Read the draft, then choose the best correction or revision. Questions WR9-WR16 are standalone sentences. 16 questions, suggested time 45 minutes. The extended-response essay (see the essay object) is a separate 45-minute task.",
+      "passages": [
+        {
+          "id": "W1",
+          "title": "Draft letter to new volunteers (questions WR1-WR8)",
+          "text": "Draft: Letter to New Volunteers\n\n(1) Dear New Volunteer,\n\n(2) Thank you for joining the Flathead Valley Food Bank. (3) Every week, our volunteers sorts more than ten thousand pounds of donated food. (4) Without you’re help, many families in our county would go without groceries.\n\n(5) Before your first shift, please review the following guidelines. (6) All volunteers must check in at the front desk, they will receive a name badge and a safety vest. (7) Closed-toe shoes are required in the warehouse. (8) Having finished the safety video, a supervisor will assign you to a station.\n\n(9) Our busiest season is from november through january. (10) During these months, we need extra help on Saturdays. (11) If you can work an additional shift, please let your supervisor know. (12) However, the food bank will host a holiday food drive in December. (13) Last year, the drive collects more than 4,000 cans.\n\n(14) We value our volunteers, and we want your experience to be rewarding. (15) Please contact me with any questions.\n\n(16) Sincerely,\nMaria Lopez, Volunteer Coordinator"
+        }
+      ],
+      "questions": [
+        {
+          "id": "WR1",
+          "type": "mc",
+          "prompt": "Which correction should be made to sentence 3?",
+          "choices": [
+            "Change “week” to “weeks.”",
+            "Change “sorts” to “sort.”",
+            "Insert a comma after “volunteers.”",
+            "Change “donated” to “donating.”"
+          ],
+          "answer": 1,
+          "explanation": "The subject “volunteers” is plural, so it needs the plural verb “sort.” The phrase “Every week” at the start can distract you into reading the subject as singular.",
+          "study_topic": "Subject-verb agreement",
+          "study_note": "A verb must match its subject in number: singular subjects take singular verbs (“the volunteer sorts”) and plural subjects take plural verbs (“the volunteers sort”). Find the subject by asking who or what does the action, and ignore introductory phrases. Example: “Every morning, the drivers load the trucks,” not “the drivers loads.” A quick trick: a singular present-tense verb usually ends in -s, while a plural subject usually does."
+        },
+        {
+          "id": "WR2",
+          "type": "mc",
+          "prompt": "Which correction should be made to sentence 4?",
+          "choices": [
+            "Change “families” to “family’s.”",
+            "Change “would” to “will.”",
+            "Change “Without” to “With out.”",
+            "Change “you’re” to “your.”"
+          ],
+          "answer": 3,
+          "explanation": "“You’re” means “you are,” which makes no sense here (“without you are help”); the possessive “your” is needed. “Families” is a correct plural and should not have an apostrophe.",
+          "study_topic": "Commonly confused words",
+          "study_note": "Contractions and possessives that sound alike are tested often: you’re/your, it’s/its, they’re/their/there, who’s/whose. Expand the contraction to check it: “you’re” must make sense as “you are.” Example: “Your order is ready” (not “you are order”), but “You’re next in line” (“you are next”). The same test works for “it’s” = “it is.”"
+        },
+        {
+          "id": "WR3",
+          "type": "mc",
+          "prompt": "Which is the best revision of sentence 6?",
+          "choices": [
+            "All volunteers must check in at the front desk, where they will receive a name badge and a safety vest.",
+            "All volunteers must check in at the front desk they will receive a name badge and a safety vest.",
+            "All volunteers must check in at the front desk, and, they will receive a name badge and a safety vest.",
+            "All volunteers must check in at the front desk; and they will receive a name badge and a safety vest."
+          ],
+          "answer": 0,
+          "explanation": "The original joins two complete sentences with only a comma, a comma splice; the correct choice fixes it by turning the second part into a dependent clause with “where.” The other choices create a run-on, add an unnecessary comma after “and,” or misuse a semicolon before a conjunction.",
+          "study_topic": "Comma splices and run-ons",
+          "study_note": "A comma alone cannot join two complete sentences; that error is a comma splice. Fix it with a period, a semicolon, a comma plus a conjunction (and, but, so), or by making one clause dependent (because, when, where, which). Example: “The store closed, we went home” becomes “The store closed, so we went home” or “When the store closed, we went home.” Do not put a comma right after “and” in these fixes."
+        },
+        {
+          "id": "WR4",
+          "type": "mc",
+          "prompt": "Which is the best revision of sentence 8?",
+          "choices": [
+            "Having finished the safety video, a station will be assigned to you by a supervisor.",
+            "Having finished the safety video, and a supervisor will assign you to a station.",
+            "After you have finished the safety video, a supervisor will assign you to a station.",
+            "A supervisor, having finished the safety video, will assign you to a station."
+          ],
+          "answer": 2,
+          "explanation": "In the original, “Having finished the safety video” seems to describe the supervisor, which is a dangling modifier; the correct revision names “you” as the one who finished. The trap choice that moves the phrase next to “supervisor” is grammatical but changes the meaning.",
+          "study_topic": "Dangling and misplaced modifiers",
+          "study_note": "An introductory phrase describes whatever noun comes right after the comma. If that noun is not the one doing the action, the modifier is dangling. Example: “Walking to work, the rain soaked me” says the rain was walking; fix it as “Walking to work, I got soaked by the rain” or “While I was walking to work, the rain soaked me.” Always ask: who is doing the action in the opening phrase?"
+        },
+        {
+          "id": "WR5",
+          "type": "mc",
+          "prompt": "Which is the correct way to write sentence 9?",
+          "choices": [
+            "Our Busiest Season is from November through January.",
+            "Our busiest season is from november through January.",
+            "Our busiest season is from November through January.",
+            "Our busiest Season is from November through january."
+          ],
+          "answer": 2,
+          "explanation": "Months are proper nouns and are always capitalized, while ordinary words like “busiest” and “season” are not. Seasons such as winter are lowercase even though months are capitalized.",
+          "study_topic": "Capitalization",
+          "study_note": "Capitalize proper nouns: names of specific people, places, organizations, days, months, and holidays. Do not capitalize common nouns or seasons (spring, summer, fall, winter) unless they start a sentence or are part of a title. Example: “We visited Glacier National Park in July, during summer vacation.” Also capitalize titles only when they come before a name: “Governor Smith,” but “the governor.”"
+        },
+        {
+          "id": "WR6",
+          "type": "mc",
+          "prompt": "Which correction should be made to sentence 13?",
+          "choices": [
+            "Change “collects” to “collected.”",
+            "Change “collects” to “will collect.”",
+            "Change “collects” to “has been collecting.”",
+            "Change “collects” to “collecting.”"
+          ],
+          "answer": 0,
+          "explanation": "“Last year” signals a completed past action, so the simple past “collected” is required. “Collecting” would leave the sentence without a main verb, creating a fragment.",
+          "study_topic": "Verb tense",
+          "study_note": "Use time clues in the sentence to choose the tense: “last year,” “yesterday,” and “in 2019” call for the past tense; “next week” calls for the future. Keep tenses consistent unless the time actually changes. Example: “Last spring the city repaved Main Street,” not “repaves.” Watch for -ing forms without a helping verb; “The city repaving the street” is a fragment."
+        },
+        {
+          "id": "WR7",
+          "type": "mc",
+          "prompt": "Which transition should replace “However” in sentence 12?",
+          "choices": [
+            "Therefore,",
+            "Instead,",
+            "Nevertheless,",
+            "In addition,"
+          ],
+          "answer": 3,
+          "explanation": "Sentence 12 adds another way volunteers can help during the busy season, so an addition transition fits. “However” and “Nevertheless” signal contrast, “Instead” signals replacement, and “Therefore” signals a result, none of which matches the relationship.",
+          "study_topic": "Transitions",
+          "study_note": "Transitions show how two ideas relate, so first decide the relationship, then pick the word. Addition: in addition, also, furthermore. Contrast: however, nevertheless, on the other hand. Cause/result: therefore, as a result. Example: “The trail was icy. Therefore, the park closed it.” If you can’t name the relationship, reread the sentences before and after."
+        },
+        {
+          "id": "WR8",
+          "type": "mc",
+          "prompt": "The writer wants to add this sentence to the letter: “Volunteers who arrive without them will not be allowed past the sorting area.” Where should it be placed?",
+          "choices": [
+            "Directly after sentence 2",
+            "Directly after sentence 7",
+            "Directly after sentence 10",
+            "Directly after sentence 14"
+          ],
+          "answer": 1,
+          "explanation": "The pronoun “them” must refer to something just mentioned; sentence 7 mentions closed-toe shoes, so the new sentence logically follows it. Placed anywhere else, “them” would have no clear antecedent.",
+          "study_topic": "Organization and sentence placement",
+          "study_note": "When placing a new sentence, look for pronouns (it, them, this) and transitions in it; they must connect to the sentence right before. Also check that the sentence matches the topic of the paragraph. Example: “It must be signed by a parent” belongs right after a sentence that mentions a permission slip. A sentence in the wrong place makes readers hunt for what it refers to."
+        },
+        {
+          "id": "WR9",
+          "type": "mc",
+          "prompt": "Choose the word that correctly completes the sentence.\n\nThe manager asked Jordan and ___ to stay late on Friday.",
+          "choices": [
+            "I",
+            "myself",
+            "mine",
+            "me"
+          ],
+          "answer": 3,
+          "explanation": "“Me” is the object of the verb “asked”; drop “Jordan and” and you would say “asked me,” not “asked I.” “Myself” is only correct when the subject also does the action (“I asked myself”).",
+          "study_topic": "Pronoun case",
+          "study_note": "Use subject pronouns (I, he, she, we, they) for the doer of the action and object pronouns (me, him, her, us, them) after verbs and prepositions. In compound phrases, cover up the other person to test: “Give it to Sam and (I/me)” becomes “Give it to me.” Reflexive pronouns like “myself” are only for when the subject acts on itself. Example: “She and I finished the job; the boss thanked her and me.”"
+        },
+        {
+          "id": "WR10",
+          "type": "mc",
+          "prompt": "Choose the word that correctly completes the sentence.\n\nBoth of the ___ uniforms were ruined in the wash.",
+          "choices": [
+            "boy’s",
+            "boys’",
+            "boys",
+            "boys’s"
+          ],
+          "answer": 1,
+          "explanation": "The uniforms belong to more than one boy (“Both”), so the plural possessive “boys’” is correct. “Boy’s” is singular possessive, and “boys” with no apostrophe shows no ownership.",
+          "study_topic": "Apostrophes and possessives",
+          "study_note": "To show possession, add ’s to a singular noun (the dog’s bowl) and add only an apostrophe to a plural noun that already ends in s (the dogs’ bowls). Irregular plurals take ’s (children’s, women’s). Never use an apostrophe just to make a word plural. Example: “The two teachers’ classrooms are next to the principal’s office.”"
+        },
+        {
+          "id": "WR11",
+          "type": "mc",
+          "prompt": "Which choice most effectively combines the sentences?\n\nThe bridge was built in 1932. It is the oldest bridge in the county. It still carries traffic every day.",
+          "choices": [
+            "The bridge was built in 1932, it is the oldest in the county, it still carries traffic every day.",
+            "Although built in 1932 and still carrying traffic every day, the oldest bridge in the county.",
+            "Built in 1932, the bridge is the oldest in the county and still carries traffic every day.",
+            "The bridge, which still carries traffic every day because it was built in 1932, is the oldest in the county."
+          ],
+          "answer": 2,
+          "explanation": "The correct choice is a complete, concise sentence that keeps all three facts and their relationships. The others contain comma splices, lack a main verb, or falsely suggest the bridge carries traffic because it is old.",
+          "study_topic": "Sentence combining",
+          "study_note": "Combine choppy sentences by turning one idea into a phrase or clause and attaching it to the main sentence, while removing repeated words. Check that the result is a complete sentence and does not add a cause-and-effect relationship that wasn’t there. Example: “The dog is old. It sleeps a lot.” becomes “The old dog sleeps a lot.” The best choice is usually the clearest and shortest that keeps the meaning."
+        },
+        {
+          "id": "WR12",
+          "type": "mc",
+          "prompt": "Choose the word that correctly completes the sentence.\n\nThe new policy will ___ every employee, regardless of department.",
+          "choices": [
+            "affect",
+            "effect",
+            "effects",
+            "affecting"
+          ],
+          "answer": 0,
+          "explanation": "After the helping verb “will,” we need a base-form verb meaning “to influence,” which is “affect.” “Effect” is usually a noun (“the effect of the policy”), and “affecting” doesn’t fit after “will.”",
+          "study_topic": "Word choice: affect vs. effect",
+          "study_note": "In most sentences, “affect” is a verb (to influence) and “effect” is a noun (a result). Memory trick: Affect = Action, Effect = End result. Example: “The storm affected travel; its effects lasted for days.” (The rare verb “to effect” means to bring about, as in “effect change,” and is seldom tested.)"
+        },
+        {
+          "id": "WR13",
+          "type": "mc",
+          "prompt": "Choose the option that correctly completes the sentence.\n\nOn weekends, Dana enjoys hiking, fishing, and ___.",
+          "choices": [
+            "camping with friends",
+            "to camp with friends",
+            "Dana camps with friends",
+            "a camp with friends"
+          ],
+          "answer": 0,
+          "explanation": "Items in a list should share the same grammatical form; “hiking” and “fishing” are -ing words, so the third item should be “camping.” The other options break the pattern.",
+          "study_topic": "Parallel structure",
+          "study_note": "Items in a series or a comparison should use the same grammatical form: all -ing words, all “to” verbs, or all nouns. Faulty: “I like to swim, biking, and run.” Parallel: “I like swimming, biking, and running.” Check pairs joined by “not only...but also” and “either...or” too. Reading the list aloud usually reveals the item that doesn’t match."
+        },
+        {
+          "id": "WR14",
+          "type": "mc",
+          "prompt": "Choose the verb that correctly completes the sentence.\n\nBy the time the storm arrived yesterday, the crew ___ the roof.",
+          "choices": [
+            "finishes",
+            "will finish",
+            "had finished",
+            "has finished"
+          ],
+          "answer": 2,
+          "explanation": "The finishing happened before another past event (the storm arriving), so the past perfect “had finished” is needed. “Has finished” is present perfect and does not fit an event that is completely in the past.",
+          "study_topic": "Verb tense: past perfect",
+          "study_note": "Use the past perfect (had + past participle) for an action completed before another past action. Signal phrases include “by the time,” “before,” and “already.” Example: “When we got to the theater, the movie had started.” The later past event uses the simple past (“got”), and the earlier one uses “had” (“had started”)."
+        },
+        {
+          "id": "WR15",
+          "type": "mc",
+          "prompt": "Which sentence is punctuated correctly?",
+          "choices": [
+            "Because the road was closed the delivery truck, took a longer route.",
+            "Because the road was closed, the delivery truck took a longer route.",
+            "The road was closed, the delivery truck took a longer route.",
+            "Because the road was closed. The delivery truck took a longer route."
+          ],
+          "answer": 1,
+          "explanation": "An introductory dependent clause is followed by a comma before the main clause, which the correct choice does. The others misplace the comma between subject and verb, create a comma splice, or turn the “Because” clause into a fragment.",
+          "study_topic": "Commas, fragments, and introductory clauses",
+          "study_note": "When a sentence begins with a dependent clause (because, although, when, if, since), put a comma after it. A dependent clause cannot stand alone; ending it with a period creates a fragment. Never put a single comma between a subject and its verb. Example: “When the bell rang, the students left” is correct; “When the bell rang. The students left” is not."
+        },
+        {
+          "id": "WR16",
+          "type": "mc",
+          "prompt": "Choose the verb that correctly completes the sentence.\n\nThe box of old photographs ___ in the attic.",
+          "choices": [
+            "are stored",
+            "have been stored",
+            "were stored",
+            "is stored"
+          ],
+          "answer": 3,
+          "explanation": "The subject is “box,” which is singular; “of old photographs” is a prepositional phrase that does not change the subject. All three wrong choices use plural verbs that agree with “photographs.”",
+          "study_topic": "Subject-verb agreement with phrases",
+          "study_note": "A prepositional phrase between the subject and verb never controls the verb. Cross out phrases starting with of, in, with, or along with, then match the verb to what’s left. Example: “The list of items (is/are) long” becomes “The list is long.” This is one of the most frequently tested grammar rules on both the GED and HiSET."
+        }
+      ]
+    },
+    {
+      "id": "math",
+      "title": "Mathematics (HiSET Mathematics / GED Mathematical Reasoning)",
+      "minutes": 60,
+      "instructions": "Solve each problem. Questions MA1-MA5 must be done WITHOUT a calculator; a calculator is allowed for MA6-MA20. You may use the formula sheet. For fill-in (numeric) questions, type your answer as a number. 20 questions, suggested time 60 minutes.",
+      "passages": [],
+      "questions": [
+        {
+          "id": "MA1",
+          "type": "mc",
+          "prompt": "Evaluate: −3 + 4 × (2 − 5)²",
+          "choices": [
+            "9",
+            "33",
+            "−39",
+            "27"
+          ],
+          "answer": 1,
+          "no_calculator": true,
+          "explanation": "Order of operations: parentheses (2 − 5 = −3), exponent ((−3)² = 9), multiply (4 × 9 = 36), then add (−3 + 36 = 33). A common trap is adding −3 + 4 first (giving 9), or treating (−3)² as −9 (giving −39).",
+          "study_topic": "Order of operations",
+          "study_note": "Follow PEMDAS: Parentheses, Exponents, Multiplication and Division (left to right), Addition and Subtraction (left to right). A negative number squared is positive: (−3)² = 9, but −3² = −9 because the exponent applies before the negative sign. Example: 10 − 2 × 3² = 10 − 2 × 9 = 10 − 18 = −8. Write each step on a new line to avoid mistakes."
+        },
+        {
+          "id": "MA2",
+          "type": "mc",
+          "prompt": "What is the value of 2/3 + 3/4 ÷ 1/2 ?",
+          "choices": [
+            "17/6",
+            "17/12",
+            "5/14",
+            "13/6"
+          ],
+          "answer": 3,
+          "no_calculator": true,
+          "explanation": "Divide first: 3/4 ÷ 1/2 = 3/4 × 2/1 = 3/2. Then add: 2/3 + 3/2 = 4/6 + 9/6 = 13/6. Adding before dividing gives 17/6; adding numerators and denominators straight across (5/7) and then multiplying by 1/2 instead of dividing gives 5/14.",
+          "study_topic": "Fraction operations",
+          "study_note": "To divide fractions, multiply by the reciprocal (flip the second fraction). To add fractions, rewrite them with a common denominator and add only the numerators. Example: 1/2 + 1/3 = 3/6 + 2/6 = 5/6, and 1/2 ÷ 1/4 = 1/2 × 4 = 2. Order of operations still applies, so do division before addition."
+        },
+        {
+          "id": "MA3",
+          "type": "numeric",
+          "prompt": "What is 15% of 240? Enter your answer as a number.",
+          "answer": "36",
+          "accepted": [
+            "36",
+            "36.0",
+            "36.00"
+          ],
+          "no_calculator": true,
+          "explanation": "Convert 15% to 0.15 and multiply: 0.15 × 240 = 36. Without a calculator, find 10% (24) and 5% (half of that, 12), then add: 24 + 12 = 36.",
+          "study_topic": "Finding a percent of a number",
+          "study_note": "Percent means “per hundred,” so 15% = 15/100 = 0.15. To find a percent of a number, multiply the decimal by the number. Mental-math shortcut: 10% moves the decimal one place left, 5% is half of 10%, and 1% moves it two places. Example: 20% of 85 = 2 × 8.5 = 17."
+        },
+        {
+          "id": "MA4",
+          "type": "mc",
+          "prompt": "Which expression is equivalent to (x³)² · x⁴ ÷ x⁵ , where x ≠ 0?",
+          "choices": [
+            "x⁵",
+            "x⁴",
+            "x⁹",
+            "x¹⁵"
+          ],
+          "answer": 0,
+          "no_calculator": true,
+          "explanation": "Power of a power multiplies exponents: (x³)² = x⁶. Multiplying adds exponents: x⁶ · x⁴ = x¹⁰. Dividing subtracts: x¹⁰ ÷ x⁵ = x⁵. The trap x⁴ comes from adding 3 + 2 instead of multiplying.",
+          "study_topic": "Exponent rules",
+          "study_note": "Three key rules: when multiplying the same base, add exponents (x² · x³ = x⁵); when dividing, subtract (x⁷ ÷ x² = x⁵); when raising a power to a power, multiply ((x²)³ = x⁶). Also, x⁰ = 1 and x⁻² = 1/x². Example: (2²)³ = 2⁶ = 64. These rules only work when the bases are the same."
+        },
+        {
+          "id": "MA5",
+          "type": "mc",
+          "prompt": "Which is the value of (6 × 10⁵)(4 × 10⁻²) written in scientific notation?",
+          "choices": [
+            "2.4 × 10³",
+            "1.5 × 10⁷",
+            "2.4 × 10⁴",
+            "2.4 × 10⁷"
+          ],
+          "answer": 2,
+          "no_calculator": true,
+          "explanation": "Multiply the numbers (6 × 4 = 24) and add the exponents (5 + (−2) = 3) to get 24 × 10³. Rewrite 24 as 2.4 × 10¹, so the answer is 2.4 × 10⁴. Forgetting to adjust gives 2.4 × 10³; dividing instead of multiplying gives 1.5 × 10⁷.",
+          "study_topic": "Scientific notation",
+          "study_note": "A number in scientific notation is a × 10ⁿ, where 1 ≤ a < 10. To multiply, multiply the a-values and add the exponents; then adjust if the a-value is 10 or more. Example: (3 × 10²)(5 × 10⁴) = 15 × 10⁶ = 1.5 × 10⁷. Each time you move the decimal one place left in a, add 1 to the exponent."
+        },
+        {
+          "id": "MA6",
+          "type": "mc",
+          "prompt": "On a map, 1.5 inches represents 25 miles. Two towns are 4.2 inches apart on the map. What is the actual distance between the towns?",
+          "choices": [
+            "105 miles",
+            "63 miles",
+            "70 miles",
+            "157.5 miles"
+          ],
+          "answer": 2,
+          "no_calculator": false,
+          "explanation": "Set up a proportion: 1.5/25 = 4.2/x, so 1.5x = 105 and x = 70. The trap of 105 comes from multiplying 4.2 × 25 and forgetting that 1.5 inches, not 1 inch, equals 25 miles.",
+          "study_topic": "Ratios and proportions",
+          "study_note": "A proportion sets two equal ratios: a/b = c/d. Keep units in the same positions (inches over miles on both sides), then cross-multiply and solve. Example: if 3 gallons cost $10.50, then 3/10.50 = 8/x gives 3x = 84, so 8 gallons cost $28. Check that your answer makes sense: more map inches should mean more miles."
+        },
+        {
+          "id": "MA7",
+          "type": "mc",
+          "prompt": "A jacket originally priced at $80 is marked down 25%. At the register, an additional 10% is taken off the sale price. What is the final price, before tax?",
+          "choices": [
+            "$54.00",
+            "$52.00",
+            "$56.00",
+            "$60.00"
+          ],
+          "answer": 0,
+          "no_calculator": false,
+          "explanation": "First discount: $80 × 0.75 = $60. Second discount applies to $60, not $80: $60 × 0.90 = $54. The trap of $52 comes from adding the discounts to 35% and taking it off the original price.",
+          "study_topic": "Successive percent changes",
+          "study_note": "When discounts are applied one after another, each one is a percent of the new price, so you cannot simply add the percents. Multiply by the remaining percent each time: a 25% discount keeps 75% (× 0.75), and a 10% discount keeps 90% (× 0.90). Example: $200 with 20% off then 50% off is 200 × 0.80 × 0.50 = $80, not $60. The same idea applies to price increases (× 1.05 for a 5% increase)."
+        },
+        {
+          "id": "MA8",
+          "type": "mc",
+          "prompt": "Solve for x: 3(x − 4) + 2x = 18",
+          "choices": [
+            "x = 1.2",
+            "x = 4.4",
+            "x = 7.5",
+            "x = 6"
+          ],
+          "answer": 3,
+          "no_calculator": false,
+          "explanation": "Distribute: 3x − 12 + 2x = 18. Combine like terms: 5x − 12 = 18. Add 12: 5x = 30, so x = 6. Forgetting to distribute the 3 to the −4 gives 5x − 4 = 18 and x = 4.4.",
+          "study_topic": "Solving linear equations",
+          "study_note": "To solve a linear equation, simplify each side (distribute, combine like terms), move variable terms to one side and constants to the other, then divide. Do the same operation to both sides every time. Example: 2(x + 3) = 14 → 2x + 6 = 14 → 2x = 8 → x = 4. Check by substituting: 2(4 + 3) = 14. ✓"
+        },
+        {
+          "id": "MA9",
+          "type": "numeric",
+          "prompt": "A plumber charges a $65 service fee plus $48 per hour of work. A customer’s total bill was $281. How many hours did the plumber work? Enter your answer as a number.",
+          "answer": "4.5",
+          "accepted": [
+            "4.5",
+            "4.50",
+            "9/2",
+            "4 1/2"
+          ],
+          "no_calculator": false,
+          "explanation": "Write the equation 65 + 48h = 281. Subtract 65: 48h = 216. Divide by 48: h = 4.5 hours. A common error is dividing 281 by 48 without first subtracting the flat fee.",
+          "study_topic": "Writing equations from word problems",
+          "study_note": "Many word problems follow the pattern total = fixed amount + rate × quantity, which is a linear equation. Identify the one-time charge, the rate, and the total, then solve for the unknown. Example: a gym charges $30 to join plus $25 per month; after paying $180 total, 30 + 25m = 180 gives m = 6 months. Always subtract the fixed amount before dividing by the rate."
+        },
+        {
+          "id": "MA10",
+          "type": "mc",
+          "prompt": "Which inequality represents all solutions of −2x + 7 > 15 ?",
+          "choices": [
+            "x > −4",
+            "x < −4",
+            "x < 4",
+            "x > 11"
+          ],
+          "answer": 1,
+          "no_calculator": false,
+          "explanation": "Subtract 7: −2x > 8. Divide both sides by −2 and reverse the inequality sign: x < −4. The trap x > −4 comes from forgetting to flip the sign when dividing by a negative number.",
+          "study_topic": "Solving linear inequalities",
+          "study_note": "Solve inequalities like equations, with one extra rule: when you multiply or divide both sides by a negative number, reverse the inequality sign. Example: −3x ≤ 12 becomes x ≥ −4. Check with a test value: x = −5 in the original problem gives −2(−5) + 7 = 17 > 15. ✓ On a number line, < and > use open circles, while ≤ and ≥ use closed circles."
+        },
+        {
+          "id": "MA11",
+          "type": "mc",
+          "prompt": "A school play sold 120 tickets for a total of $820. Adult tickets cost $9 and child tickets cost $5. How many adult tickets were sold?",
+          "choices": [
+            "65",
+            "91",
+            "60",
+            "55"
+          ],
+          "answer": 3,
+          "no_calculator": false,
+          "explanation": "Let a = adult tickets and c = child tickets: a + c = 120 and 9a + 5c = 820. Substitute c = 120 − a: 9a + 600 − 5a = 820, so 4a = 220 and a = 55. The trap 65 is the number of child tickets.",
+          "study_topic": "Systems of linear equations",
+          "study_note": "A system uses two equations to find two unknowns. Write one equation for the count and one for the value, then use substitution (solve one equation for a variable and plug it into the other) or elimination (add or subtract the equations to cancel a variable). Example: x + y = 10 and x − y = 4; adding gives 2x = 14, so x = 7 and y = 3. Always reread the question to see which variable it asks for."
+        },
+        {
+          "id": "MA12",
+          "type": "mc",
+          "prompt": "Which is a factored form of x² − 5x − 14 ?",
+          "choices": [
+            "(x + 7)(x − 2)",
+            "(x − 7)(x + 2)",
+            "(x − 7)(x − 2)",
+            "(x − 14)(x + 1)"
+          ],
+          "answer": 1,
+          "no_calculator": false,
+          "explanation": "Find two numbers that multiply to −14 and add to −5: −7 and +2. So x² − 5x − 14 = (x − 7)(x + 2). The trap (x + 7)(x − 2) has the right product but gives a middle term of +5x.",
+          "study_topic": "Factoring quadratics",
+          "study_note": "To factor x² + bx + c, find two numbers that multiply to c and add to b; those become the numbers in (x + _)(x + _). Pay attention to signs: a negative c means the numbers have opposite signs. Example: x² + x − 12 = (x + 4)(x − 3), because 4 × (−3) = −12 and 4 + (−3) = 1. Check by multiplying back out with FOIL."
+        },
+        {
+          "id": "MA13",
+          "type": "numeric",
+          "prompt": "A line passes through the points (−2, 5) and (4, −7). What is the slope of the line? Enter your answer as a number.",
+          "answer": "-2",
+          "accepted": [
+            "-2",
+            "−2",
+            "-2.0",
+            "-2/1"
+          ],
+          "no_calculator": false,
+          "explanation": "Slope = (y₂ − y₁)/(x₂ − x₁) = (−7 − 5)/(4 − (−2)) = −12/6 = −2. A common mistake is subtracting the x-values in the opposite order from the y-values, which flips the sign to +2.",
+          "study_topic": "Slope",
+          "study_note": "Slope measures how steep a line is: rise over run, m = (y₂ − y₁)/(x₂ − x₁). Subtract in the same order on top and bottom. A positive slope rises left to right, a negative slope falls, a horizontal line has slope 0, and a vertical line’s slope is undefined. Example: through (1, 2) and (3, 8), m = (8 − 2)/(3 − 1) = 6/2 = 3."
+        },
+        {
+          "id": "MA14",
+          "type": "mc",
+          "prompt": "The table shows values of a function f.\n\nx: 0, 1, 2, 3\nf(x): 3, 7, 11, 15\n\nWhich equation could define f?",
+          "choices": [
+            "f(x) = 7x",
+            "f(x) = 3x + 4",
+            "f(x) = 4x + 3",
+            "f(x) = x² + 3x + 3"
+          ],
+          "answer": 2,
+          "no_calculator": false,
+          "explanation": "The outputs increase by 4 each time x increases by 1, so the slope is 4, and f(0) = 3 gives the y-intercept: f(x) = 4x + 3. The traps each fit only some points; for example, f(x) = x² + 3x + 3 gives 3 and 7 but then 13 instead of 11.",
+          "study_topic": "Functions from tables",
+          "study_note": "If the outputs change by the same amount each time x goes up by 1, the function is linear with that change as its slope. The output when x = 0 is the y-intercept b, so f(x) = mx + b. Example: x: 0, 1, 2 and y: 5, 3, 1 gives m = −2 and b = 5, so y = −2x + 5. Test your equation on every row, not just one."
+        },
+        {
+          "id": "MA15",
+          "type": "mc",
+          "prompt": "If g(x) = 2x² − 3x + 1, what is g(−2)?",
+          "choices": [
+            "15",
+            "3",
+            "−1",
+            "23"
+          ],
+          "answer": 0,
+          "no_calculator": false,
+          "explanation": "Substitute carefully: 2(−2)² − 3(−2) + 1 = 2(4) + 6 + 1 = 15. The trap 3 comes from treating −3(−2) as −6, and 23 comes from squaring 2 × (−2) instead of only −2.",
+          "study_topic": "Evaluating functions",
+          "study_note": "To evaluate f(a), replace every x with a in parentheses, then follow order of operations. Square the input before multiplying by the coefficient, and remember that a negative times a negative is positive. Example: if h(x) = x² − 4x, then h(−3) = (−3)² − 4(−3) = 9 + 12 = 21. Using parentheses prevents most sign errors."
+        },
+        {
+          "id": "MA16",
+          "type": "mc",
+          "prompt": "A 13-foot ladder leans against a vertical wall. The bottom of the ladder is 5 feet from the base of the wall on level ground. How high up the wall does the ladder reach?",
+          "choices": [
+            "12 feet",
+            "8 feet",
+            "18 feet",
+            "13.9 feet"
+          ],
+          "answer": 0,
+          "no_calculator": false,
+          "explanation": "The ladder is the hypotenuse: 5² + h² = 13², so 25 + h² = 169, h² = 144, and h = 12. The trap 13.9 comes from adding the squares (treating 13 as a leg), and 8 comes from subtracting 13 − 5 without squaring.",
+          "study_topic": "Pythagorean theorem",
+          "study_note": "In a right triangle, a² + b² = c², where c is the hypotenuse, the longest side opposite the right angle. To find a missing leg, subtract: b² = c² − a². Example: a TV with a 50-inch diagonal and 30-inch height has width √(50² − 30²) = √1600 = 40 inches. Common whole-number sets are 3-4-5, 5-12-13, and 8-15-17."
+        },
+        {
+          "id": "MA17",
+          "type": "numeric",
+          "prompt": "A cylindrical water tank has a radius of 3 inches and a height of 10 inches. What is its volume, rounded to the nearest whole cubic inch? (Use π ≈ 3.14 or the π key.) Enter your answer as a number.",
+          "answer": "283",
+          "accepted": [
+            "283",
+            "283.0"
+          ],
+          "no_calculator": false,
+          "explanation": "V = πr²h = π(3²)(10) = 90π ≈ 282.6 (with 3.14) or 282.7 (with the π key), which rounds to 283 either way. A common error is using the diameter or forgetting to square the radius (giving 94).",
+          "study_topic": "Volume of a cylinder",
+          "study_note": "The volume of a cylinder is V = πr²h: the area of the circular base times the height. Use the radius, not the diameter; if given a diameter, divide by 2 first. Example: a can with diameter 4 cm and height 10 cm has V = π(2²)(10) = 40π ≈ 125.6 cm³. This formula is on the GED formula sheet, but you still need to plug in correctly."
+        },
+        {
+          "id": "MA18",
+          "type": "mc",
+          "prompt": "A garden is shaped like a rectangle 20 feet long and 12 feet wide, with a semicircle attached along one of the 12-foot sides. Using π ≈ 3.14, what is the total area of the garden, to the nearest tenth of a square foot?",
+          "choices": [
+            "353.0 square feet",
+            "466.1 square feet",
+            "296.5 square feet",
+            "258.8 square feet"
+          ],
+          "answer": 2,
+          "no_calculator": false,
+          "explanation": "Rectangle: 20 × 12 = 240. The semicircle’s diameter is 12, so r = 6 and its area is ½π(6²) = 18π ≈ 56.52. Total ≈ 296.5. Using a full circle gives 353.0, and using 12 as the radius gives 466.1.",
+          "study_topic": "Area of composite figures",
+          "study_note": "Break a composite shape into familiar pieces, find each area, and add (or subtract for cut-outs). For a semicircle, use half of πr², and find the radius from the side it sits on. Example: a 10 × 4 rectangle with a semicircle on a 4-unit side has area 40 + ½π(2²) ≈ 40 + 6.28 = 46.28. The GED formula sheet does not list circle area or circumference, so memorize A = πr² and C = 2πr."
+        },
+        {
+          "id": "MA19",
+          "type": "mc",
+          "prompt": "A store recorded the number of customers each hour: 12, 15, 9, 15, 20, 11, 16. Which statement about the data is true?",
+          "choices": [
+            "The mean equals the mode.",
+            "The median is greater than the mean.",
+            "The range is 9.",
+            "The median is 12."
+          ],
+          "answer": 1,
+          "no_calculator": false,
+          "explanation": "Sorted: 9, 11, 12, 15, 15, 16, 20. Mean = 98 ÷ 7 = 14; median (middle value) = 15; mode = 15; range = 20 − 9 = 11. So the median (15) is greater than the mean (14). Choosing “median is 12” comes from taking the middle of the unsorted list.",
+          "study_topic": "Mean, median, mode, and range",
+          "study_note": "Mean is the sum divided by the count; median is the middle value after sorting (average the two middle values for an even count); mode is the most frequent value; range is maximum minus minimum. Always sort the data before finding the median. Example: for 3, 7, 7, 10, 13, the mean is 40 ÷ 5 = 8, median is 7, mode is 7, and range is 10. One very large or small value pulls the mean more than the median."
+        },
+        {
+          "id": "MA20",
+          "type": "mc",
+          "prompt": "A bag contains 5 red, 3 blue, and 4 green marbles. Two marbles are drawn at random without replacement. What is the probability that both are red?",
+          "choices": [
+            "25/144",
+            "5/12",
+            "5/24",
+            "5/33"
+          ],
+          "answer": 3,
+          "no_calculator": false,
+          "explanation": "P(first red) = 5/12. After removing one red marble, 4 red remain out of 11: P(second red) = 4/11. Multiply: 5/12 × 4/11 = 20/132 = 5/33. The trap 25/144 assumes the first marble is put back.",
+          "study_topic": "Probability of dependent events",
+          "study_note": "Probability = favorable outcomes ÷ total outcomes. For two events in a row, multiply their probabilities; without replacement, reduce both the favorable count and the total after the first draw. Example: drawing 2 aces from a 52-card deck without replacement is 4/52 × 3/51 = 1/221. With replacement, the second probability stays the same as the first."
+        }
+      ]
+    },
+    {
+      "id": "science",
+      "title": "Science (HiSET Science / GED Science)",
+      "minutes": 45,
+      "instructions": "Many questions are based on a short passage, table, or data set. Read each one carefully before answering the questions that refer to it. A calculator is allowed. 16 questions, suggested time 45 minutes.",
+      "passages": [
+        {
+          "id": "S1",
+          "title": "Fertilizer and Bean Plant Growth (questions SC1–SC3)",
+          "text": "A student wanted to know whether the amount of fertilizer affects how tall bean plants grow. She set up four groups of 5 bean plants each. All plants were the same variety, were planted in identical pots with the same type of soil, received 50 mL of water each day, and were placed by the same sunny window. The only difference between the groups was the amount of fertilizer added each week.\n\nAfter 4 weeks, she measured each plant and calculated the average height for each group.\n\nGroup | Fertilizer per week | Average height after 4 weeks\nA | 0 g | 12.0 cm\nB | 2 g | 15.5 cm\nC | 4 g | 18.2 cm\nD | 6 g | 14.1 cm"
+        },
+        {
+          "id": "S2",
+          "title": "Flower Color in Pea Plants (questions SC4–SC5)",
+          "text": "In pea plants, the allele for purple flowers (P) is dominant over the allele for white flowers (p). A plant with at least one P allele has purple flowers; only a plant with two p alleles (pp) has white flowers.\n\nA geneticist crosses two plants that are both heterozygous for flower color (Pp × Pp). The Punnett square for the cross is shown below.\n\n      |  P  |  p\n  P   | PP  | Pp\n  p   | Pp  | pp"
+        },
+        {
+          "id": "S3",
+          "title": "A Montana Grassland Food Web (question SC6)",
+          "text": "In a Montana grassland, grasses are eaten by grasshoppers and by prairie dogs. Grasshoppers are eaten by meadowlarks. Prairie dogs are eaten by black-footed ferrets, coyotes, and golden eagles. Meadowlarks are eaten by coyotes and golden eagles. In this ecosystem, black-footed ferrets feed almost entirely on prairie dogs."
+        },
+        {
+          "id": "S4",
+          "title": "Motion of a Motorized Cart (questions SC8–SC9)",
+          "text": "A small motorized cart with a mass of 2.0 kg starts from rest and speeds up along a straight, level track. A student records its position every second.\n\nTime (s) | Position (m)\n0 | 0.0\n1 | 0.5\n2 | 2.0\n3 | 4.5\n4 | 8.0\n5 | 12.5\n\nFrom these data, the student calculates that the cart has a constant acceleration of 1.0 m/s², produced by a constant net force from the motor."
+        },
+        {
+          "id": "S5",
+          "title": "Densities of Common Metals (question SC11)",
+          "text": "Density is mass divided by volume (D = m/V). The table lists the densities of four metals at room temperature.\n\nMetal | Density (g/cm³)\nAluminum | 2.70\nIron | 7.87\nCopper | 8.96\nLead | 11.34"
+        },
+        {
+          "id": "S6",
+          "title": "Weather Observations in Great Falls (question SC15)",
+          "text": "A weather station in Great Falls, Montana, recorded these observations on one autumn day.\n\nTime | Temperature (°F) | Air pressure (inches of mercury) | Wind direction\n12:00 p.m. | 48 | 30.12 | South\n3:00 p.m. | 50 | 29.98 | South\n6:00 p.m. | 41 | 29.85 | Northwest\n9:00 p.m. | 30 | 30.05 | Northwest"
+        }
+      ],
+      "questions": [
+        {
+          "id": "SC1",
+          "type": "mc",
+          "prompt": "What is the independent variable in this experiment?",
+          "choices": [
+            "The average height of the plants",
+            "The amount of fertilizer added each week",
+            "The amount of water each plant received",
+            "The number of plants in each group"
+          ],
+          "answer": 1,
+          "explanation": "The independent variable is the one the experimenter changes on purpose, here the fertilizer amount. Plant height is the dependent variable (what is measured), and water is a controlled variable kept the same for all groups.",
+          "study_topic": "Variables in an experiment",
+          "study_note": "The independent variable is what the scientist deliberately changes; the dependent variable is what is measured in response; controlled variables are kept the same so they can’t affect the results. A good experiment changes only one independent variable at a time. Example: testing whether music affects typing speed, music type is independent, typing speed is dependent, and the keyboard and time of day are controlled. On a graph, the independent variable usually goes on the x-axis."
+        },
+        {
+          "id": "SC2",
+          "type": "mc",
+          "prompt": "What is the main purpose of Group A?",
+          "choices": [
+            "It tests how water affects plant growth.",
+            "It doubles the number of plants tested in Group B.",
+            "It is the hypothesis being tested.",
+            "It is the control group that the fertilized groups can be compared to."
+          ],
+          "answer": 3,
+          "explanation": "Group A receives no fertilizer, so it shows how the plants grow without the treatment; the other groups are compared to it. Water was the same for all groups, so Group A does not test water.",
+          "study_topic": "Control groups",
+          "study_note": "A control group does not receive the treatment being tested, giving a baseline for comparison. Without it, you cannot tell whether a change was caused by the treatment or would have happened anyway. Example: in a medicine trial, the control group gets a placebo (sugar pill) while the test group gets the real drug. The control group should be identical to the test groups in every other way."
+        },
+        {
+          "id": "SC3",
+          "type": "mc",
+          "prompt": "Which conclusion is best supported by the data?",
+          "choices": [
+            "Average plant height increased as fertilizer increased up to 4 g per week, but was lower at 6 g per week.",
+            "Adding more fertilizer always produces taller bean plants.",
+            "Fertilizer has no effect on the growth of bean plants.",
+            "The 6 g of fertilizer per week killed the plants in Group D."
+          ],
+          "answer": 0,
+          "explanation": "Heights rose from 12.0 to 15.5 to 18.2 cm, then fell to 14.1 cm at 6 g, so the effect is not “always more is better.” The plants in Group D still grew to 14.1 cm, so there is no evidence they died.",
+          "study_topic": "Drawing conclusions from data",
+          "study_note": "A supported conclusion describes the trend the data actually show, including any reversals, and does not go beyond them. Watch for words like “always,” “never,” or “proves,” which usually overstate. Example: if test scores rise with 1, 2, and 3 hours of study but drop at 6 hours, conclude that scores improved up to 3 hours, not that more study always helps. Also avoid claiming causes or events (like plants dying) that weren’t measured."
+        },
+        {
+          "id": "SC4",
+          "type": "mc",
+          "prompt": "What percentage of the offspring from this cross are expected to have white flowers?",
+          "choices": [
+            "50%",
+            "75%",
+            "25%",
+            "0%"
+          ],
+          "answer": 2,
+          "explanation": "Only one of the four boxes (pp) produces white flowers, so 1/4 = 25%. The trap 75% is the percentage of purple-flowered offspring.",
+          "study_topic": "Punnett squares",
+          "study_note": "A Punnett square shows the possible allele combinations from two parents; each box has an equal chance. Count the boxes with the trait you want and divide by 4. Example: Bb × bb gives Bb, Bb, bb, bb, so 50% show the dominant trait and 50% the recessive trait. Recessive traits appear only when an offspring inherits two recessive alleles."
+        },
+        {
+          "id": "SC5",
+          "type": "mc",
+          "prompt": "Of the offspring that have purple flowers, what fraction are expected to be heterozygous (Pp)?",
+          "choices": [
+            "1/2",
+            "1/4",
+            "2/3",
+            "3/4"
+          ],
+          "answer": 2,
+          "explanation": "Three boxes are purple (PP, Pp, Pp), and two of those three are Pp, so the fraction is 2/3. The trap 1/2 counts Pp out of all four offspring instead of only the purple ones.",
+          "study_topic": "Genotype vs. phenotype ratios",
+          "study_note": "Genotype is the allele pair (PP, Pp, pp); phenotype is the visible trait (purple or white). A Pp × Pp cross gives a 1:2:1 genotype ratio and a 3:1 phenotype ratio. When a question limits the group (“of the purple offspring”), use only that group as the denominator. Example: in that cross, 1 of the 3 purple offspring is PP, so 1/3 are homozygous dominant."
+        },
+        {
+          "id": "SC6",
+          "type": "mc",
+          "prompt": "Suppose a disease sharply reduces the prairie dog population. Which change is most likely to happen first?",
+          "choices": [
+            "The black-footed ferret population will decline.",
+            "The grasshopper population will decline.",
+            "The amount of grass will decrease.",
+            "The coyote population will begin eating more grass."
+          ],
+          "answer": 0,
+          "explanation": "Ferrets depend almost entirely on prairie dogs for food, so they would be hit first and hardest. With fewer prairie dogs eating grass, grass would increase, not decrease, and grasshoppers would have more food.",
+          "study_topic": "Food webs and population changes",
+          "study_note": "In a food web, arrows of energy flow from food to eater. When one population falls, its predators lose food and usually decline, while its food source often increases. Predators with only one food source are affected most. Example: if a pond’s minnows die off, herons that eat minnows decline, while the algae the minnows ate may grow faster."
+        },
+        {
+          "id": "SC7",
+          "type": "mc",
+          "prompt": "During a hard run, a person’s breathing rate and heart rate both increase. Which explanation best accounts for this?",
+          "choices": [
+            "The digestive system needs more blood to break down food during exercise.",
+            "The lungs produce extra glucose, which the heart pumps to the muscles.",
+            "The nervous system shuts down during exercise, so the heart must work harder.",
+            "Muscle cells need more oxygen for cellular respiration, so the respiratory system takes in more oxygen and the circulatory system delivers it faster."
+          ],
+          "answer": 3,
+          "explanation": "Working muscles use more energy, which their mitochondria release through cellular respiration using oxygen and glucose; the lungs and heart speed up to supply oxygen and remove carbon dioxide. Lungs do not make glucose, and blood flow to digestion actually decreases during exercise.",
+          "study_topic": "Body systems working together",
+          "study_note": "Body systems cooperate to keep the body in balance (homeostasis). The respiratory system brings oxygen into the blood and removes carbon dioxide; the circulatory system carries oxygen and nutrients to cells; cells use them in cellular respiration (glucose + oxygen → carbon dioxide + water + energy) inside mitochondria. Example: on a hot day, the circulatory system sends more blood to the skin and the skin sweats to release heat. Questions often ask which two systems work together for a given task."
+        },
+        {
+          "id": "SC8",
+          "type": "mc",
+          "prompt": "What is the cart’s average speed over the first 4 seconds?",
+          "choices": [
+            "8.0 m/s",
+            "2.0 m/s",
+            "3.5 m/s",
+            "0.5 m/s"
+          ],
+          "answer": 1,
+          "explanation": "Average speed = total distance ÷ total time = 8.0 m ÷ 4 s = 2.0 m/s. The trap 3.5 m/s is the speed during only the 4th second (8.0 − 4.5), and 8.0 m/s confuses distance with speed.",
+          "study_topic": "Speed and average speed",
+          "study_note": "Average speed equals total distance divided by total time (s = d/t). If an object is speeding up, its speed changes, so the average over a whole trip differs from its speed over any single second. Example: driving 150 miles in 2.5 hours is an average speed of 60 mph, even if you sometimes went 75 mph and sometimes stopped. Read tables carefully to use the total distance at the correct time."
+        },
+        {
+          "id": "SC9",
+          "type": "mc",
+          "prompt": "If the same net force were applied to a cart with twice the mass (4.0 kg), what would the cart’s acceleration be?",
+          "choices": [
+            "2.0 m/s²",
+            "1.0 m/s²",
+            "4.0 m/s²",
+            "0.5 m/s²"
+          ],
+          "answer": 3,
+          "explanation": "The net force on the 2.0 kg cart is F = ma = 2.0 kg × 1.0 m/s² = 2.0 N. With the same 2.0 N acting on 4.0 kg, a = F/m = 2.0 ÷ 4.0 = 0.5 m/s². The trap 2.0 m/s² assumes more mass means more acceleration.",
+          "study_topic": "Newton’s second law",
+          "study_note": "Newton’s second law says F = ma: net force (newtons) equals mass (kilograms) times acceleration (m/s²). For the same force, doubling the mass cuts the acceleration in half; doubling the force doubles the acceleration. Example: pushing an empty shopping cart and a full one with the same force, the empty cart speeds up faster. Rearranged, a = F/m and m = F/a."
+        },
+        {
+          "id": "SC10",
+          "type": "mc",
+          "prompt": "At a hydroelectric dam on the Missouri River, water stored behind the dam flows down through turbines that turn generators. Which sequence best describes the main energy transformations?",
+          "choices": [
+            "Chemical energy → thermal energy → electrical energy",
+            "Gravitational potential energy → kinetic energy → electrical energy",
+            "Kinetic energy → gravitational potential energy → chemical energy",
+            "Electrical energy → kinetic energy → gravitational potential energy"
+          ],
+          "answer": 1,
+          "explanation": "Water held high behind the dam has gravitational potential energy; as it falls, that becomes kinetic energy (motion), which spins turbines and generators to produce electrical energy. The chemical-to-thermal sequence describes a coal or gas power plant.",
+          "study_topic": "Energy transformations",
+          "study_note": "Energy is never created or destroyed; it changes form (the law of conservation of energy). Potential energy is stored energy (height, chemical bonds, a stretched spring); kinetic energy is energy of motion. Example: a battery-powered flashlight converts chemical energy → electrical energy → light (and some heat). For a dam, height means potential energy, falling water means kinetic energy, and generators make electricity."
+        },
+        {
+          "id": "SC11",
+          "type": "mc",
+          "prompt": "An unknown metal sample has a mass of 44.8 g and a volume of 5.0 cm³. Based on the table, which metal is the sample most likely made of?",
+          "choices": [
+            "Iron",
+            "Lead",
+            "Copper",
+            "Aluminum"
+          ],
+          "answer": 2,
+          "explanation": "D = m/V = 44.8 g ÷ 5.0 cm³ = 8.96 g/cm³, which matches copper. Iron (7.87) is close but does not match; dividing volume by mass (0.11) would match nothing.",
+          "study_topic": "Density",
+          "study_note": "Density is mass per unit volume, D = m/V, and it is a property that helps identify a substance regardless of sample size. Objects denser than water (1.0 g/cm³) sink in it, and less dense objects float. Example: a 30 g block with a volume of 40 cm³ has density 0.75 g/cm³ and will float. Cutting a sample in half does not change its density."
+        },
+        {
+          "id": "SC12",
+          "type": "mc",
+          "prompt": "A student places 10.0 g of baking soda in an open cup of vinegar on a scale. The mixture fizzes, and the total mass shown on the scale drops by 4.0 g. Which statement best explains this result?",
+          "choices": [
+            "A gas was produced and escaped into the air, so the total mass of all substances was still conserved.",
+            "Mass was destroyed during the chemical reaction.",
+            "The reaction converted 4.0 g of mass into heat energy.",
+            "The baking soda dissolved, and dissolved substances have no mass."
+          ],
+          "answer": 0,
+          "explanation": "The fizzing shows carbon dioxide gas forming; because the cup is open, the gas leaves and the scale cannot weigh it. In a closed container, the mass would stay the same, demonstrating conservation of mass.",
+          "study_topic": "Chemical reactions and conservation of mass",
+          "study_note": "In a chemical reaction, atoms are rearranged but not created or destroyed, so the total mass of reactants equals the total mass of products. Signs of a chemical reaction include gas bubbles, a color change, light, temperature change, or a new solid (precipitate). Example: burning wood seems to lose mass, but the missing mass is in the smoke, carbon dioxide, and water vapor released. A balanced equation shows the same number of each type of atom on both sides."
+        },
+        {
+          "id": "SC13",
+          "type": "mc",
+          "prompt": "A sound wave travels through air at 340 m/s and has a frequency of 170 Hz. Using the equation v = f × λ (wave speed = frequency × wavelength), what is the wavelength of the sound wave?",
+          "choices": [
+            "2.0 m",
+            "0.5 m",
+            "57,800 m",
+            "510 m"
+          ],
+          "answer": 0,
+          "explanation": "Solve for wavelength: λ = v ÷ f = 340 ÷ 170 = 2.0 m. Multiplying instead (340 × 170) gives 57,800 m, and dividing the wrong way (170 ÷ 340) gives 0.5 m.",
+          "study_topic": "Wave properties",
+          "study_note": "Wavelength (λ) is the distance between two crests, frequency (f) is how many waves pass per second (hertz), and wave speed v = f × λ. In the same medium, a higher frequency means a shorter wavelength. Example: a wave with frequency 5 Hz and wavelength 3 m moves at 15 m/s. Sound needs a medium (air, water, solids), while light can travel through empty space."
+        },
+        {
+          "id": "SC14",
+          "type": "mc",
+          "prompt": "Scientists studying the floor of the Atlantic Ocean find that rock is youngest at the Mid-Atlantic Ridge and becomes steadily older with distance from the ridge on both sides. This evidence best supports which conclusion?",
+          "choices": [
+            "Two plates are colliding at the ridge, pushing old rock upward.",
+            "The ocean floor is older than most of the continents.",
+            "New crust forms at the ridge as two plates move apart.",
+            "Rock near the ridge has been worn away faster by ocean currents."
+          ],
+          "answer": 2,
+          "explanation": "Young rock at the center and matching older rock on both sides shows that magma rises at the ridge, forms new crust, and is carried outward as the plates spread; this is a divergent boundary. Colliding plates would not produce a symmetric pattern of younger-to-older rock.",
+          "study_topic": "Plate tectonics",
+          "study_note": "Earth’s outer layer is broken into plates that move a few centimeters a year. At divergent boundaries plates move apart and new crust forms (mid-ocean ridges); at convergent boundaries plates collide, forming mountains, trenches, and volcanoes; at transform boundaries plates slide past each other, causing earthquakes. Example: the San Andreas Fault in California is a transform boundary. Seafloor-age patterns are key evidence for seafloor spreading."
+        },
+        {
+          "id": "SC15",
+          "type": "mc",
+          "prompt": "Based on the data, which event most likely occurred between 3:00 p.m. and 6:00 p.m.?",
+          "choices": [
+            "A warm front passed through the area.",
+            "A cold front passed through the area.",
+            "A high-pressure system moved in, causing temperatures to rise.",
+            "Air pressure rose steadily as skies cleared."
+          ],
+          "answer": 1,
+          "explanation": "A cold front typically brings a sharp temperature drop, a wind shift (here from south to northwest), and a pressure low followed by rising pressure, all of which appear in the data. Temperatures fell, not rose, and pressure was falling between 3:00 and 6:00, ruling out the other choices.",
+          "study_topic": "Weather fronts and air pressure",
+          "study_note": "A front is a boundary between air masses. When a cold front passes, temperatures drop quickly, winds shift (often to the northwest in North America), pressure bottoms out and then rises, and storms may form. A warm front brings gradual warming and steady rain. Falling pressure usually signals stormy weather approaching, and rising pressure signals clearing. Example: a reading that falls from 30.10 to 29.80 inches over a few hours suggests a storm system is near."
+        },
+        {
+          "id": "SC16",
+          "type": "mc",
+          "prompt": "Why is it summer in Montana in June while it is winter in Argentina?",
+          "choices": [
+            "Earth is closest to the Sun in June.",
+            "The Sun gives off more energy in June than in December.",
+            "The Northern Hemisphere has more land, which heats up faster than water.",
+            "Earth’s axis is tilted, so in June the Northern Hemisphere is tilted toward the Sun and receives more direct sunlight."
+          ],
+          "answer": 3,
+          "explanation": "Seasons are caused by the 23.5° tilt of Earth’s axis, which changes how directly sunlight strikes each hemisphere and how long the days are. Earth is actually closest to the Sun in early January, so distance cannot explain the seasons.",
+          "study_topic": "Seasons and Earth’s tilt",
+          "study_note": "Earth’s axis is tilted about 23.5°. As Earth orbits the Sun, the hemisphere tilted toward the Sun gets more direct rays and longer days (summer), while the other gets indirect rays and shorter days (winter). That is why seasons are opposite in the Northern and Southern Hemispheres. Example: in December, it is winter in Montana and summer in Australia. A day is one rotation on the axis; a year is one orbit around the Sun."
+        }
+      ]
+    },
+    {
+      "id": "social_studies",
+      "title": "Social Studies (HiSET Social Studies / GED Social Studies)",
+      "minutes": 40,
+      "instructions": "Choose the best answer. Some questions include a quotation from a historical document or a data table; use the information given along with what you know. 16 questions, suggested time 40 minutes.",
+      "passages": [],
+      "questions": [
+        {
+          "id": "SS1",
+          "type": "mc",
+          "prompt": "The president vetoes a bill passed by Congress. Congress then overrides the veto with a two-thirds vote in both the House and the Senate, and the bill becomes law. This sequence is an example of",
+          "choices": [
+            "federalism",
+            "checks and balances",
+            "popular sovereignty",
+            "judicial review"
+          ],
+          "answer": 1,
+          "explanation": "Each branch can limit the others: the president checks Congress with a veto, and Congress checks the president by overriding it. Federalism is the division of power between national and state governments, which is not involved here.",
+          "study_topic": "Checks and balances",
+          "study_note": "The Constitution divides power among three branches: legislative (Congress makes laws), executive (the president enforces laws), and judicial (courts interpret laws). Checks and balances let each branch limit the others so no one branch becomes too powerful. Examples: the president vetoes bills, Congress overrides vetoes and can impeach officials, the Senate confirms judges, and courts can strike down unconstitutional laws. Separation of powers is the division; checks and balances are the limits."
+        },
+        {
+          "id": "SS2",
+          "type": "mc",
+          "prompt": "“Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise thereof; or abridging the freedom of speech, or of the press; or the right of the people peaceably to assemble, and to petition the Government for a redress of grievances.”\n— First Amendment, U.S. Constitution\n\nWhich action is most directly protected by this amendment?",
+          "choices": [
+            "A homeowner refuses to let soldiers live in her house during peacetime.",
+            "A person accused of a crime demands a trial by jury.",
+            "A rancher keeps a hunting rifle at home.",
+            "A group of residents holds a peaceful rally outside the state capitol to oppose a new law."
+          ],
+          "answer": 3,
+          "explanation": "A peaceful rally to oppose a law uses the rights to assemble and to petition the government, both named in the First Amendment. The other choices are protected by the Third, Sixth, and Second Amendments.",
+          "study_topic": "The Bill of Rights",
+          "study_note": "The first ten amendments (the Bill of Rights, 1791) protect individual liberties. Key ones: 1st, freedom of religion, speech, press, assembly, and petition; 2nd, right to bear arms; 4th, protection from unreasonable searches and seizures; 5th, no self-incrimination, due process; 6th, speedy and public jury trial and a lawyer; 8th, no cruel and unusual punishment; 10th, powers not given to the federal government are reserved to the states or the people. Example: a police search of a home without a warrant raises a 4th Amendment question."
+        },
+        {
+          "id": "SS3",
+          "type": "mc",
+          "prompt": "Under the U.S. system of federalism, which power is generally reserved to the states rather than held by the federal government?",
+          "choices": [
+            "Establishing and running public school systems",
+            "Printing and coining money",
+            "Declaring war",
+            "Making treaties with foreign nations"
+          ],
+          "answer": 0,
+          "explanation": "Education is not among the powers the Constitution gives the national government, so under the Tenth Amendment it is reserved to the states. Coining money, declaring war, and making treaties are federal powers.",
+          "study_topic": "Federalism",
+          "study_note": "Federalism divides power between the national government and the states. Delegated (enumerated) powers belong to the federal government: coining money, declaring war, regulating interstate commerce, and conducting foreign affairs. Reserved powers belong to the states: running elections, licensing drivers and professionals, and setting up schools and local governments. Concurrent powers are shared, such as taxing, borrowing, and building roads. Example: Montana sets its own speed limits, while the federal government prints the dollar bills used there."
+        },
+        {
+          "id": "SS4",
+          "type": "mc",
+          "prompt": "In 1965, a 19-year-old citizen could not vote in federal elections in most states. Which constitutional amendment changed this by setting the minimum voting age at 18?",
+          "choices": [
+            "The Nineteenth Amendment",
+            "The Fifteenth Amendment",
+            "The Twenty-sixth Amendment",
+            "The Twenty-fourth Amendment"
+          ],
+          "answer": 2,
+          "explanation": "The Twenty-sixth Amendment (1971) lowered the voting age to 18, partly because young people were being drafted to fight in Vietnam. The Fifteenth (1870) barred race discrimination in voting, the Nineteenth (1920) barred sex discrimination, and the Twenty-fourth (1964) banned poll taxes in federal elections.",
+          "study_topic": "Voting rights amendments",
+          "study_note": "Voting rights expanded through several amendments: the 15th (1870) prohibited denying the vote based on race; the 19th (1920) prohibited denying it based on sex; the 24th (1964) banned poll taxes in federal elections; and the 26th (1971) set the voting age at 18. The Voting Rights Act of 1965, a law rather than an amendment, outlawed literacy tests and other discriminatory practices. Example: before 1920, women could vote in some western states, including Montana (1914), but not nationally. Remember the order: race, sex, poll tax, age."
+        },
+        {
+          "id": "SS5",
+          "type": "mc",
+          "prompt": "The president nominates a person to serve as a federal judge. Which part of the government must confirm the nomination before the person can take office?",
+          "choices": [
+            "The House of Representatives",
+            "The Supreme Court",
+            "The Senate",
+            "The president’s Cabinet"
+          ],
+          "answer": 2,
+          "explanation": "The Constitution gives the Senate the power of “advice and consent” on federal judges, Cabinet members, and ambassadors. The House has other special powers, such as starting tax bills and impeachment, but does not confirm appointments.",
+          "study_topic": "Powers of Congress",
+          "study_note": "Congress has two houses with different special powers. The Senate (2 senators per state, 6-year terms) confirms presidential appointments, approves treaties with a two-thirds vote, and holds impeachment trials. The House (seats based on population, 2-year terms) starts revenue (tax) bills and votes to impeach. Example: Montana has 2 senators like every state but only 2 House seats because of its population. Both houses must pass a bill before it goes to the president."
+        },
+        {
+          "id": "SS6",
+          "type": "mc",
+          "prompt": "“That whenever any Form of Government becomes destructive of these ends, it is the Right of the People to alter or to abolish it, and to institute new Government...”\n— Declaration of Independence, 1776\n\nWhich idea is expressed in this excerpt?",
+          "choices": [
+            "People have the right to change or replace a government that fails to protect their rights.",
+            "Government receives its authority directly from the king.",
+            "The colonies should establish a monarchy of their own.",
+            "State governments should always be stronger than the national government."
+          ],
+          "answer": 0,
+          "explanation": "The excerpt says that when a government destroys the purposes it was created for (protecting rights like life, liberty, and the pursuit of happiness), the people may alter or abolish it. This reflects John Locke’s ideas of natural rights and the consent of the governed, and it rejects the divine right of kings.",
+          "study_topic": "Founding documents and Enlightenment ideas",
+          "study_note": "The Declaration of Independence (1776) explained why the colonies separated from Britain. It draws on Enlightenment thinker John Locke: people have natural (unalienable) rights, governments get their power from the consent of the governed, and people may change a government that violates their rights. The Constitution (1787) later set up the structure of the new government. Example: “all men are created equal” is from the Declaration, while “We the People” begins the Constitution’s Preamble."
+        },
+        {
+          "id": "SS7",
+          "type": "mc",
+          "prompt": "Under the Articles of Confederation, the national Congress could not collect taxes and had no power to regulate trade between the states. These weaknesses contributed most directly to",
+          "choices": [
+            "the start of the Revolutionary War",
+            "the Louisiana Purchase",
+            "the outbreak of the Civil War",
+            "the calling of the Constitutional Convention in 1787"
+          ],
+          "answer": 3,
+          "explanation": "Unable to raise money or settle trade disputes, and alarmed by events like Shays’ Rebellion (1786–1787), leaders met in Philadelphia in 1787 and wrote a new constitution. The Revolutionary War began in 1775, before the Articles took effect in 1781.",
+          "study_topic": "Articles of Confederation",
+          "study_note": "The Articles of Confederation (ratified 1781) created a weak central government because Americans feared a powerful ruler after their experience with Britain. Congress could not tax, regulate interstate trade, or enforce laws; there was no president or national court; and changing the Articles required every state to agree. These problems led to the Constitutional Convention of 1787, which created a stronger federal government with three branches. Example: Congress had to ask states for money and could not force them to pay."
+        },
+        {
+          "id": "SS8",
+          "type": "mc",
+          "prompt": "President Abraham Lincoln issued the Emancipation Proclamation on January 1, 1863. Which statement about it is accurate?",
+          "choices": [
+            "It ended slavery everywhere in the United States.",
+            "It did not immediately free enslaved people in border states that remained loyal to the Union.",
+            "It was a constitutional amendment ratified by the states.",
+            "It granted citizenship to formerly enslaved people."
+          ],
+          "answer": 1,
+          "explanation": "The Proclamation applied only to areas in rebellion against the Union, so it did not apply to loyal border states such as Kentucky and Maryland. Slavery was abolished nationwide by the Thirteenth Amendment (1865), and citizenship came with the Fourteenth Amendment (1868).",
+          "study_topic": "Civil War and Reconstruction",
+          "study_note": "The Civil War (1861–1865) was fought between the Union and the Confederate states over slavery and states’ rights. The Emancipation Proclamation (1863) declared enslaved people in rebelling states free and made ending slavery a Union war goal. The Reconstruction Amendments followed: the 13th abolished slavery (1865), the 14th granted citizenship and equal protection (1868), and the 15th protected voting rights regardless of race (1870). Example: the 14th Amendment’s equal protection clause was later the basis for Brown v. Board of Education."
+        },
+        {
+          "id": "SS9",
+          "type": "mc",
+          "prompt": "Which program created during the New Deal of the 1930s still provides monthly retirement income to millions of Americans today?",
+          "choices": [
+            "The Civilian Conservation Corps",
+            "The Works Progress Administration",
+            "The Homestead Act",
+            "Social Security"
+          ],
+          "answer": 3,
+          "explanation": "The Social Security Act of 1935 created old-age insurance that continues today. The Civilian Conservation Corps and Works Progress Administration were New Deal job programs that ended in the 1940s, and the Homestead Act was passed in 1862, long before the New Deal.",
+          "study_topic": "The Great Depression and the New Deal",
+          "study_note": "The Great Depression began with the stock market crash of 1929 and brought massive unemployment. President Franklin D. Roosevelt’s New Deal (1933 onward) used federal programs for relief, recovery, and reform: job programs (CCC, WPA), bank protections (FDIC, still operating), stock market rules (SEC), and Social Security. It greatly expanded the federal government’s role in the economy. Example: CCC workers built trails and structures still used in Glacier and Yellowstone national parks."
+        },
+        {
+          "id": "SS10",
+          "type": "mc",
+          "prompt": "Which statement correctly describes the relationship between Plessy v. Ferguson (1896) and Brown v. Board of Education (1954)?",
+          "choices": [
+            "Plessy v. Ferguson overturned Brown v. Board of Education and allowed segregated public schools.",
+            "Brown v. Board of Education rejected the “separate but equal” doctrine that Plessy v. Ferguson had upheld, ruling that segregated public schools were unconstitutional.",
+            "Both cases ruled that racial segregation violated the Fourteenth Amendment.",
+            "Brown v. Board of Education extended the “separate but equal” doctrine from railroads to public schools."
+          ],
+          "answer": 1,
+          "explanation": "Plessy (1896) upheld racial segregation under the “separate but equal” doctrine; Brown (1954) unanimously held that separate schools are “inherently unequal,” violating the Fourteenth Amendment’s equal protection clause. Plessy came first, so it could not overturn Brown.",
+          "study_topic": "Landmark Supreme Court cases",
+          "study_note": "Key cases to know: Marbury v. Madison (1803) established judicial review; Plessy v. Ferguson (1896) upheld “separate but equal”; Brown v. Board of Education (1954) struck down school segregation; Miranda v. Arizona (1966) requires police to inform suspects of their rights. The Supreme Court can reverse its own earlier decisions, as Brown did to Plessy for public schools. Example: “You have the right to remain silent” comes from Miranda. Check dates: a later case can overturn an earlier one, never the reverse."
+        },
+        {
+          "id": "SS11",
+          "type": "mc",
+          "prompt": "After World War II, the United States gave billions of dollars in aid to Western European countries through the Marshall Plan (1948). The main purpose of this aid was to",
+          "choices": [
+            "punish Germany and Italy for starting the war",
+            "establish U.S. colonies in Western Europe",
+            "rebuild their economies and reduce the appeal of communism",
+            "pay for the U.S. space program"
+          ],
+          "answer": 2,
+          "explanation": "The Marshall Plan supported the Cold War policy of containment: strong, prosperous democracies were less likely to turn to communism or fall under Soviet influence. Western Germany actually received Marshall Plan aid, which contradicts the idea of punishment.",
+          "study_topic": "The Cold War",
+          "study_note": "The Cold War (about 1947–1991) was a rivalry between the United States (democracy, capitalism) and the Soviet Union (communism) without direct full-scale war between them. The U.S. policy of containment aimed to stop communism from spreading, through the Truman Doctrine, the Marshall Plan, NATO (1949), and conflicts in Korea and Vietnam. It also included the arms race and the space race. Example: the Berlin Wall (1961–1989) became the symbol of a divided Europe."
+        },
+        {
+          "id": "SS12",
+          "type": "mc",
+          "prompt": "A late spring frost destroys much of the cherry crop in orchards around Flathead Lake. If consumer demand for cherries stays the same, what is the most likely result in the local cherry market?",
+          "choices": [
+            "The price of cherries rises, and the quantity sold falls.",
+            "The price of cherries falls, and the quantity sold rises.",
+            "The demand curve for cherries shifts to the right.",
+            "The price stays the same because demand did not change."
+          ],
+          "answer": 0,
+          "explanation": "The frost reduces supply (the supply curve shifts left); with demand unchanged, the new equilibrium has a higher price and a lower quantity. The frost does not change how many cherries buyers want at each price, so the demand curve does not shift.",
+          "study_topic": "Supply and demand",
+          "study_note": "The law of demand says that as price rises, buyers want less; the law of supply says that as price rises, sellers offer more. The market price settles where the two meet (equilibrium). A decrease in supply raises price and lowers quantity; an increase in demand raises both price and quantity. Example: when a new phone launches and many people want it (higher demand) but stock is limited, prices on resale sites jump. Ask whether an event affects buyers (demand) or sellers (supply)."
+        },
+        {
+          "id": "SS13",
+          "type": "mc",
+          "prompt": "The Consumer Price Index (CPI) measures the average change over time in prices paid by consumers for a basket of goods and services. The table shows the annual average CPI for all urban consumers (1982–84 = 100), from the U.S. Bureau of Labor Statistics.\n\nYear | CPI\n2021 | 270.97\n2022 | 292.66\n2023 | 304.70\n\nBy approximately what percent did prices rise from 2022 to 2023?",
+          "choices": [
+            "4.1%",
+            "12.0%",
+            "8.0%",
+            "3.9%"
+          ],
+          "answer": 0,
+          "explanation": "Percent change = (304.70 − 292.66) ÷ 292.66 × 100 ≈ 4.1%. The trap 12.0% is the change in index points, not a percent; 3.9% divides by the new value instead of the original; 8.0% is the 2021–2022 rate.",
+          "study_topic": "Inflation and the CPI",
+          "study_note": "Inflation is a general rise in prices, which reduces the purchasing power of money. The inflation rate is the percent change in the CPI: (new − old) ÷ old × 100. Always divide by the earlier (original) value. Example: if the CPI goes from 200 to 210, inflation is 10 ÷ 200 = 5%. If your wages rise 3% while inflation is 5%, your real (inflation-adjusted) income falls."
+        },
+        {
+          "id": "SS14",
+          "type": "mc",
+          "prompt": "Gross domestic product (GDP) is the total market value of all final goods and services produced within a country in a year. Which of the following would be counted in U.S. GDP?",
+          "choices": [
+            "A used car sold by one neighbor to another",
+            "Sheet steel bought by a factory to build pickup trucks",
+            "A new pickup truck assembled at a factory in Tennessee and sold to a rancher in Montana",
+            "A Social Security check sent to a retiree"
+          ],
+          "answer": 2,
+          "explanation": "A newly produced final good made in the United States counts in GDP. Used goods were already counted when first made, steel used to build a truck is an intermediate good (its value is included in the truck’s price), and Social Security checks are transfer payments, not payment for new production.",
+          "study_topic": "GDP",
+          "study_note": "GDP measures the value of new, final goods and services produced within a country’s borders in a period. It excludes used goods, intermediate goods (to avoid double counting), transfer payments (Social Security, unemployment benefits), and purely financial trades like buying stock. GDP is often split into consumer spending, business investment, government purchases, and net exports. Example: a haircut you pay for counts; selling your old couch online does not. Two quarters in a row of falling real GDP is a common informal sign of a recession."
+        },
+        {
+          "id": "SS15",
+          "type": "mc",
+          "prompt": "The Missouri River begins in southwestern Montana, east of the Continental Divide. Where does its water eventually flow?",
+          "choices": [
+            "Into the Pacific Ocean",
+            "Into the Gulf of Mexico, by way of the Mississippi River",
+            "Into Hudson Bay",
+            "Into the Great Salt Lake"
+          ],
+          "answer": 1,
+          "explanation": "Rivers east of the Continental Divide drain toward the Atlantic side; the Missouri joins the Mississippi near St. Louis, which empties into the Gulf of Mexico. Rivers west of the divide, like the Clark Fork, flow toward the Pacific.",
+          "study_topic": "Physical geography and watersheds",
+          "study_note": "A watershed (drainage basin) is all the land that drains into one river system. The Continental Divide runs along the Rocky Mountains and separates rivers that flow to the Pacific from those that flow to the Atlantic, Gulf of Mexico, or Hudson Bay. Montana is unusual because water there can reach three different seas. Example: rain falling in Missoula flows toward the Pacific through the Clark Fork and Columbia rivers, while rain in Great Falls reaches the Gulf of Mexico. Geography questions often ask you to connect a place to its larger system."
+        },
+        {
+          "id": "SS16",
+          "type": "mc",
+          "prompt": "The table shows approximate population and land area for four states (U.S. Census Bureau estimates, 2023, rounded).\n\nState | Population | Land area (square miles)\nMontana | 1,130,000 | 145,500\nWyoming | 585,000 | 97,100\nIdaho | 1,960,000 | 82,600\nNorth Dakota | 785,000 | 69,000\n\nPopulation density is people per square mile (population ÷ land area). Which conclusion is supported by the data?",
+          "choices": [
+            "Montana has the lowest population density because it has the largest land area.",
+            "Idaho has the largest land area of the four states.",
+            "North Dakota has more people per square mile than Idaho.",
+            "Wyoming has the lowest population density of the four states."
+          ],
+          "answer": 3,
+          "explanation": "Densities: Wyoming ≈ 6.0, Montana ≈ 7.8, North Dakota ≈ 11.4, and Idaho ≈ 23.7 people per square mile, so Wyoming is lowest. Montana is the trap: it has the most land, but it also has nearly twice Wyoming’s population.",
+          "study_topic": "Reading data tables / population density",
+          "study_note": "Population density = population ÷ land area, which lets you compare places of different sizes. A large area does not automatically mean low density; you must divide. When reading a table, check units and titles, and calculate rather than eyeball. Example: a county with 50,000 people on 1,000 square miles (50 per square mile) is denser than one with 80,000 people on 4,000 square miles (20 per square mile). Data questions on social studies tests reward careful arithmetic."
+        }
+      ]
+    }
+  ],
+  "essay": {
+    "id": "ESSAY",
+    "title": "Extended Response: Should Public Libraries Eliminate Overdue Fines?",
+    "minutes": 45,
+    "section_id": "writing",
+    "instructions": "Read both passages, then plan and write your response. Both passages and their authors are fictional and were written for practice. On the real GED, you type the essay on screen; on HiSET Writing, the essay is also typed. Aim for 4 to 7 paragraphs (roughly 300 to 500 words).",
+    "passages": [
+      {
+        "id": "E1",
+        "title": "Fines Push Away the Readers Who Need Libraries Most",
+        "author": "Renee Castillo, director of a regional public library system (fictional)",
+        "text": "For decades, libraries charged overdue fines on the theory that small penalties would get books back on time. The evidence no longer supports that theory. When our library system eliminated fines in 2021, we tracked the results carefully. Within a year, 96 percent of borrowed items were returned within a month of their due date, almost exactly the rate under the old policy. Meanwhile, the number of active library cards rose 14 percent, and nearly 1,200 residents whose accounts had been blocked over unpaid fines came back to borrow again.\n\nFines also cost more than they collect. Our system took in about $18,000 a year in fines, less than one percent of its budget, while staff spent an estimated 900 hours a year processing payments and handling disputes. That is time that could go to story hours, job-search help, and computer classes.\n\nMost importantly, fines fall hardest on the families with the least money. A $10 balance is a nuisance for some households and a barrier for others. A blocked card can mean a child without books for the summer or a job seeker without internet access. Libraries exist to open doors. Overdue fines close them."
+      },
+      {
+        "id": "E2",
+        "title": "Without Fines, Responsibility Goes Out the Door",
+        "author": "Gary Whitlock, local newspaper columnist (fictional)",
+        "text": "When I was growing up, the librarian at our little Carnegie library collected a nickel a day for every overdue book, and I learned quickly to bring mine back on time. That lesson in responsibility has stayed with me my whole life. Now some libraries want to throw that lesson away.\n\nCommon sense tells us what will happen. If there is no penalty for keeping a book, why would anyone return it? Shelves will empty, wait lists will grow, and the people who follow the rules will be punished for the carelessness of those who don’t. A friend in a neighboring town tells me that since his library dropped fines, he waited weeks for a popular new novel.\n\nFines also bring in money that libraries badly need. Every dollar counts in a tight budget, and taxpayers should not have to make up the difference because some borrowers can’t be bothered to keep track of a due date.\n\nLibraries have charged fines for more than a hundred years. A tradition that has lasted that long exists for a reason. Rather than lowering our expectations, we should be teaching the next generation the same responsibility my generation learned."
+      }
+    ],
+    "prompt": "The two articles present opposing views on whether public libraries should eliminate overdue fines. In your response, analyze both positions presented in the articles to determine which one is better supported. Use relevant and specific evidence from both articles to support your response. Remember: you are judging which argument is better supported by evidence and reasoning, not stating your personal opinion about library fines.",
+    "rubric": [
+      {
+        "trait": 1,
+        "name": "Analysis of Arguments and Use of Evidence",
+        "scores": {
+          "2": "States a clear claim about which position is better supported. Analyzes specific evidence and reasoning from both passages (for example, statistics vs. personal anecdote) and explains why the evidence is strong or weak. Points out flawed reasoning such as unsupported assumptions, appeals to tradition, or hearsay.",
+          "1": "Takes a position, but analysis is general or uneven. Cites some evidence, often by summarizing rather than evaluating it, or discusses only one passage in depth. Explanation of why evidence is strong or weak is limited.",
+          "0": "No clear claim, or the response only gives a personal opinion about fines. Little or no relevant evidence from the passages, or the response mostly copies the passages. Off-topic or blank responses score 0."
+        }
+      },
+      {
+        "trait": 2,
+        "name": "Development of Ideas and Organizational Structure",
+        "scores": {
+          "2": "Ideas are well developed and logically ordered: an introduction with a claim, body paragraphs that each focus on one point, and a conclusion. Transitions connect ideas clearly. Tone is appropriate and formal.",
+          "1": "Some organization is present, but paragraphs may wander, ideas may be listed without explanation, or transitions may be missing. Development is uneven or thin.",
+          "0": "Little or no organization; ideas are undeveloped, repetitive, or hard to follow."
+        }
+      },
+      {
+        "trait": 3,
+        "name": "Clarity and Command of Standard English Conventions",
+        "scores": {
+          "2": "Sentences are clear and varied. Few errors in grammar, usage, spelling, capitalization, and punctuation, and errors do not interfere with meaning. Word choice is precise.",
+          "1": "Some awkward or run-on sentences and a noticeable number of errors, but the meaning is mostly clear.",
+          "0": "Frequent, serious errors that make the response hard to understand, or the response is too short to judge."
+        }
+      }
+    ],
+    "scoring_note": "Each trait is scored 0 to 2, for a raw total of 0 to 6. On the real GED, the extended response counts toward the RLA score (raw points are doubled and combined with the reading and language items). On HiSET Writing, the essay is scored on a 1 to 6 scale and you need at least 2 out of 6 on the essay to pass the Writing subtest. For self-scoring practice, a total of 4 or more out of 6 on this rubric is a solid target.",
+    "self_check": [
+      "My introduction states which position is better supported (not just whether I like fines).",
+      "I named at least two specific pieces of evidence from the stronger passage (for example, the 96 percent return rate, the 14 percent rise in active cards, or the $18,000 vs. 900 staff hours).",
+      "I explained at least two weaknesses in the other passage (for example, a personal childhood memory, a secondhand story from a friend, a ‘common sense’ prediction with no data, or an appeal to tradition).",
+      "I explained why each piece of evidence is strong or weak instead of just repeating it.",
+      "I acknowledged at least one reasonable point from the weaker side, then explained why it is less convincing.",
+      "Each body paragraph has one main point and starts with a clear topic sentence.",
+      "I used transitions (for example, ‘In contrast,’ ‘Furthermore,’ ‘However’).",
+      "My conclusion restates my claim in new words without adding brand-new evidence.",
+      "I wrote in third person and a formal tone (no ‘I think’ needed; no slang).",
+      "I saved 3 to 5 minutes to proofread for run-ons, fragments, agreement, spelling, and apostrophes."
+    ],
+    "model_outline": [
+      "Introduction: Both writers address whether libraries should drop overdue fines. Castillo’s argument for eliminating fines is better supported because it relies on measured results and specific figures, while Whitlock relies on personal memory, secondhand stories, and predictions with no evidence.",
+      "Body 1 (strength of Passage 1’s evidence): Castillo reports that 96 percent of items were still returned within a month after fines ended, nearly the same as before, which directly answers the fear that books will not come back. She also cites a 14 percent rise in active cards and about 1,200 returning residents, showing a measurable benefit. Explain why tracked data from an actual policy change is more reliable than opinion.",
+      "Body 2 (cost reasoning): Castillo compares about $18,000 in fines (under 1 percent of the budget) with roughly 900 staff hours spent collecting them. This undercuts Whitlock’s claim that libraries ‘badly need’ fine money, a claim he never supports with a single figure.",
+      "Body 3 (weaknesses of Passage 2): Whitlock’s main support is his childhood experience (one person’s anecdote), a friend’s wait for a novel (hearsay that may have many causes, such as the book’s popularity), a ‘common sense’ prediction that Castillo’s data contradicts, and an appeal to tradition (‘more than a hundred years’). Concede that teaching responsibility is a fair value, but note he gives no evidence that fines actually teach it better than other methods.",
+      "Conclusion: Restate that Castillo’s position is better supported because her claims are backed by specific, relevant data, while Whitlock’s argument depends on emotion, anecdote, and assumptions. Close with a sentence on why evidence, not tradition, should guide public policy."
+    ]
+  },
+  "formula_sheet": [
+    {
+      "category": "Area",
+      "on_ged_sheet": true,
+      "formulas": [
+        {
+          "name": "Parallelogram",
+          "formula": "A = bh"
+        },
+        {
+          "name": "Trapezoid",
+          "formula": "A = ½h(b₁ + b₂)"
+        }
+      ]
+    },
+    {
+      "category": "Surface Area and Volume",
+      "on_ged_sheet": true,
+      "note": "p = perimeter of base with area B; π ≈ 3.14",
+      "formulas": [
+        {
+          "name": "Rectangular/right prism",
+          "formula": "SA = ph + 2B ; V = Bh"
+        },
+        {
+          "name": "Cylinder",
+          "formula": "SA = 2πrh + 2πr² ; V = πr²h"
+        },
+        {
+          "name": "Pyramid",
+          "formula": "SA = ½ps + B ; V = ⅓Bh"
+        },
+        {
+          "name": "Cone",
+          "formula": "SA = πrs + πr² ; V = ⅓πr²h"
+        },
+        {
+          "name": "Sphere",
+          "formula": "SA = 4πr² ; V = (4/3)πr³"
+        }
+      ]
+    },
+    {
+      "category": "Algebra",
+      "on_ged_sheet": true,
+      "formulas": [
+        {
+          "name": "Slope of a line",
+          "formula": "m = (y₂ − y₁)/(x₂ − x₁)"
+        },
+        {
+          "name": "Slope-intercept form of a line",
+          "formula": "y = mx + b"
+        },
+        {
+          "name": "Point-slope form of a line",
+          "formula": "y − y₁ = m(x − x₁)"
+        },
+        {
+          "name": "Standard form of a quadratic equation",
+          "formula": "y = ax² + bx + c"
+        },
+        {
+          "name": "Quadratic formula",
+          "formula": "x = (−b ± √(b² − 4ac)) / (2a)"
+        },
+        {
+          "name": "Pythagorean theorem",
+          "formula": "a² + b² = c²"
+        },
+        {
+          "name": "Simple interest",
+          "formula": "I = prt (I = interest, p = principal, r = rate, t = time)"
+        },
+        {
+          "name": "Distance formula (rate)",
+          "formula": "d = rt (d = distance, r = rate, t = time)"
+        },
+        {
+          "name": "Total cost",
+          "formula": "total cost = (number of units) × (price per unit)"
+        }
+      ]
+    },
+    {
+      "category": "Memorize: NOT on the GED sheet but needed on the test",
+      "on_ged_sheet": false,
+      "formulas": [
+        {
+          "name": "Rectangle",
+          "formula": "A = lw ; P = 2l + 2w"
+        },
+        {
+          "name": "Square",
+          "formula": "A = s² ; P = 4s"
+        },
+        {
+          "name": "Triangle",
+          "formula": "A = ½bh ; P = s₁ + s₂ + s₃"
+        },
+        {
+          "name": "Circle",
+          "formula": "A = πr² ; C = 2πr = πd ; d = 2r"
+        },
+        {
+          "name": "Mean",
+          "formula": "sum of values ÷ number of values"
+        },
+        {
+          "name": "Median",
+          "formula": "middle value of an ordered list (average the two middle values if the count is even)"
+        },
+        {
+          "name": "Percent change",
+          "formula": "(new − original) ÷ original × 100%"
+        },
+        {
+          "name": "Probability",
+          "formula": "P = favorable outcomes ÷ total possible outcomes"
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "real_exam_passing": {
+      "GED": "Each of the 4 GED subjects (Reasoning Through Language Arts, Mathematical Reasoning, Science, Social Studies) is scored on a 100-200 scale. You need at least 145 on each subject to pass; you must pass all four to earn the credential. (165+ is ‘GED College Ready’ and 175+ is ‘College Ready + Credit’.)",
+      "HiSET": "Each of the 5 HiSET subtests (Reading, Writing, Mathematics, Science, Social Studies) is scored on a 1-20 scale. To pass you need at least 8 on every subtest, a combined total of at least 45 across all five, and at least 2 out of 6 on the Writing essay.",
+      "montana_note": "Montana accepts both the HiSET and the GED, and Flathead Valley Community College offers both. Confirm which one you are registered for before test day. This practice bank is organized into the same five subject areas as HiSET, and the GED-style essay and formula sheet are included because the skills overlap heavily."
+    },
+    "practice_target": "Scaled scores cannot be computed exactly from a practice set, because real tests are equated and some questions are weighted differently. As a practical guide, scoring about 65-70% or more on each section of this bank is a likely-pass signal. Below 55% means that section needs focused study; 55-64% is borderline, so review the study notes for every missed question and retake the section.",
+    "bands": [
+      {
+        "percent_correct": "70% and above",
+        "meaning": "Likely pass. Keep sharp by retaking sections."
+      },
+      {
+        "percent_correct": "65-69%",
+        "meaning": "Likely pass, but with little margin. Review missed topics."
+      },
+      {
+        "percent_correct": "55-64%",
+        "meaning": "Borderline. Study the topics you missed and retest."
+      },
+      {
+        "percent_correct": "Below 55%",
+        "meaning": "Needs focused study before scheduling the real test."
+      }
+    ],
+    "section_targets": [
+      {
+        "section": "reading",
+        "questions": 16,
+        "likely_pass_target_correct": "10-11 or more of 16"
+      },
+      {
+        "section": "writing",
+        "questions": 16,
+        "likely_pass_target_correct": "10-11 or more of 16"
+      },
+      {
+        "section": "math",
+        "questions": 20,
+        "likely_pass_target_correct": "13-14 or more of 20"
+      },
+      {
+        "section": "science",
+        "questions": 16,
+        "likely_pass_target_correct": "10-11 or more of 16"
+      },
+      {
+        "section": "social_studies",
+        "questions": 16,
+        "likely_pass_target_correct": "10-11 or more of 16"
+      }
+    ],
+    "how_to_use": [
+      "Take each section separately in one sitting, timed, with no notes (use the formula sheet for Math).",
+      "For Math questions marked no_calculator, do not use a calculator; for the rest, a calculator is allowed (the GED uses the TI-30XS; HiSET also provides an on-screen calculator).",
+      "Score yourself, then read the explanation and study note for every question you missed or guessed on.",
+      "Write the study_topic of each missed question on a list; those topics are your study plan.",
+      "Score the essay with the 3-trait rubric; it is helpful to swap essays with your study partner and score each other’s."
+    ]
+  }
+};
+      const PASSAGE_MAP = {"RD1":"R1","RD2":"R1","RD3":"R1","RD4":"R1","RD5":"R2","RD6":"R2","RD7":"R2","RD8":"R2","RD9":"R3","RD10":"R3","RD11":"R3","RD12":"R3","RD13":"R4","RD14":"R4","RD15":"R4","RD16":"R4","WR1":"W1","WR2":"W1","WR3":"W1","WR4":"W1","WR5":"W1","WR6":"W1","WR7":"W1","WR8":"W1","SC1":"S1","SC2":"S1","SC3":"S1","SC4":"S2","SC5":"S2","SC6":"S3","SC8":"S4","SC9":"S4","SC11":"S5","SC15":"S6"};
+      QB.sections.forEach(s=>s.questions.forEach(q=>{ if(!q.passage_id && PASSAGE_MAP[q.id]) q.passage_id = PASSAGE_MAP[q.id]; }));
+      const $app = document.getElementById("app");
+      const $modal = document.getElementById("modal");
+      const L = "ABCDEFGH";
+      let who = null, P = null, cur = null, canSave = true;
+
+      const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+      const paras = (t) => String(t || "").split(/\n+/).filter(Boolean).map((p) => `<p>${esc(p)}</p>`).join("");
+      const findPassage = (s, q) => (q && q.passage_id ? (s.passages || []).find((p) => p.id === q.passage_id) || null : null);
+      function passageBody(t) {
+        const out = [], lines = String(t || "").split("\n"); let para = [], rows = [];
+        const flushP = () => { if (para.length) out.push(`<p>${para.map(esc).join("<br>")}</p>`); para = []; };
+        const flushT = () => { if (rows.length) { const [h, ...b] = rows.map((r) => r.split("|").map((c) => c.trim()));
+          out.push(`<div class="table-wrap"><table><thead><tr>${h.map((c) => `<th scope="col">${esc(c)}</th>`).join("")}</tr></thead><tbody>${b.map((r) => `<tr>${r.map((c, i) => (i ? `<td>${esc(c)}</td>` : `<th scope="row">${esc(c)}</th>`)).join("")}</tr>`).join("")}</tbody></table></div>`); } rows = []; };
+        lines.forEach((l) => { if (l.includes(" | ")) { flushP(); rows.push(l); } else if (!l.trim()) { flushP(); flushT(); } else { flushT(); para.push(l); } });
+        flushP(); flushT(); return out.join("");
+      }
+      const short = (t) => t.split(" (")[0];
+      const sub = (t) => (t.match(/\((.*)\)/) || [])[1] || "";
+      const sec = (id) => QB.sections.find((s) => s.id === id);
+      const norm = (v) => String(v == null ? "" : v).trim().replace(/[$,\s]/g, "").toLowerCase();
+      const blank = (v) => v === undefined || v === null || v === "";
+      function isRight(q, v) {
+        if (blank(v)) return false;
+        if (q.type === "mc") return Number(v) === q.answer;
+        return [q.answer].concat(q.accepted || []).map(norm).includes(norm(v));
+      }
+      const fmt = (q, v) => (blank(v) ? "Left blank" : q.type === "mc" ? `${L[v]}. ${q.choices[v]}` : String(v));
+      const fresh = () => ({ sections: {}, essay: { text: "", done: false, scores: {}, checks: [] } });
+      const sp = (id) => (P.sections[id] = P.sections[id] || { answers: {}, idx: 0, done: false });
+      const pct = (r, n) => Math.round((100 * r) / n);
+
+      function load(name) {
+        try { const raw = localStorage.getItem("hse-" + name); return raw ? JSON.parse(raw) : fresh(); }
+        catch (e) { canSave = false; showBanner(); return fresh(); }
+      }
+      function save() {
+        try { localStorage.setItem("hse-" + who, JSON.stringify(P)); }
+        catch (e) { canSave = false; showBanner(); }
+      }
+      function showBanner() { document.getElementById("banner").hidden = canSave; }
+      try { localStorage.setItem("hse-test", "1"); localStorage.removeItem("hse-test"); } catch (e) { canSave = false; }
+      showBanner();
+
+      function copy(text, btn) {
+        const done = () => { if (btn) { const o = btn.textContent; btn.textContent = "Copied"; setTimeout(() => (btn.textContent = o), 1600); } };
+        const fallback = () => { const t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); } catch (e) {} t.remove(); done(); };
+        if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+      }
+      function show(html) { ttsStop(); ttsTexts = {}; $app.innerHTML = html; window.scrollTo(0, 0); }
+
+      /* ---------- Read aloud ---------- */
+      const canTTS = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+      const RATES = [0.8, 1, 1.2];
+      let ttsTexts = {}, ttsKey = null, ttsGen = 0, ttsVoice = null;
+      function pickVoice() {
+        if (!canTTS) return;
+        const vs = speechSynthesis.getVoices() || [], lg = (v) => String(v.lang || "").replace("_", "-").toLowerCase();
+        ttsVoice = vs.find((v) => lg(v) === "en-us" && v.localService) || vs.find((v) => lg(v) === "en-us") || vs.find((v) => lg(v).startsWith("en")) || null;
+      }
+      if (canTTS) {
+        pickVoice();
+        if (speechSynthesis.addEventListener) speechSynthesis.addEventListener("voiceschanged", pickVoice);
+        else speechSynthesis.onvoiceschanged = pickVoice;
+      }
+      const ttsRate = () => (P && RATES.includes(P.ttsRate) ? P.ttsRate : 1);
+      const rateLabel = () => `Speed ${ttsRate()}x`;
+      const ttsBtn = (key, label) => `<button class="btn" data-tts="${key}" data-label="${esc(label)}">${esc(label)}</button>`;
+      const rateBtn = () => `<button class="btn" data-tts-rate aria-label="Reading speed, tap to change">${rateLabel()}</button>`;
+      function ttsNotice(btn) {
+        $app.querySelectorAll(".x-tts-note").forEach((n) => n.remove());
+        const n = document.createElement("p");
+        n.className = "fineprint x-tts-note"; n.setAttribute("role", "status");
+        n.textContent = "Read-aloud isn't available in this viewer. Open this page in Chrome (or Safari on iPhone) and the speaker buttons will work.";
+        const host = (btn && btn.closest(".x-row, .x-tts-row")) || btn;
+        if (host && host.parentNode) host.insertAdjacentElement("afterend", n); else $app.prepend(n);
+      }
+      function speakable(t) {
+        const out = []; let head = null;
+        String(t || "").split("\n").forEach((l) => {
+          if (!l.trim()) { head = null; return; }
+          if (l.includes(" | ")) {
+            const cells = l.split("|").map((c) => c.trim());
+            if (!head) { head = cells; return; }
+            out.push(cells.map((c, i) => (head[i] ? `${head[i]}: ${c}` : c)).join(", ") + ".");
+          } else { head = null; out.push(/[.!?:;]["'”’)\]]?$/.test(l.trim()) ? l.trim() : l.trim() + "."); }
+        });
+        return out.join(" ");
+      }
+      function chunks(text, max = 200) {
+        const sents = String(text).replace(/\s+/g, " ").trim().match(/[^.!?]+[.!?]+["'”’)\]]*\s*|[^.!?]+$/g) || [];
+        const parts = [];
+        sents.forEach((s) => {
+          s = s.trim();
+          while (s.length > max) {
+            let cut = s.lastIndexOf(", ", max); if (cut < max / 2) cut = s.lastIndexOf(" ", max); if (cut < 1) cut = max;
+            parts.push(s.slice(0, cut + 1).trim()); s = s.slice(cut + 1).trim();
+          }
+          if (s) parts.push(s);
+        });
+        const out = [];
+        parts.forEach((p) => { const last = out.length - 1; if (last >= 0 && out[last].length + p.length + 1 <= max) out[last] += " " + p; else out.push(p); });
+        return out;
+      }
+      function ttsMark() {
+        $app.querySelectorAll("[data-tts]").forEach((b) => { const on = b.dataset.tts === ttsKey; b.textContent = on ? "⏹ Stop" : b.dataset.label; b.setAttribute("aria-pressed", String(on)); });
+      }
+      function ttsStop() {
+        ttsGen++; ttsKey = null;
+        if (canTTS) { try { speechSynthesis.cancel(); } catch (e) {} }
+        ttsMark();
+      }
+      function ttsSpeak(key, btn) {
+        if (ttsKey === key) { ttsStop(); return; }
+        ttsStop();
+        if (!canTTS) { ttsNotice(btn); return; }
+        const list = chunks(ttsTexts[key] || "");
+        if (!list.length) return;
+        const gen = ttsGen; ttsKey = key; ttsMark();
+        let i = 0, started = false;
+        const fail = () => { if (gen !== ttsGen) return; ttsStop(); ttsNotice(btn); };
+        const next = () => {
+          if (gen !== ttsGen) return;
+          if (i >= list.length) { ttsKey = null; ttsMark(); return; }
+          const u = new SpeechSynthesisUtterance(list[i++]);
+          u.lang = "en-US"; if (ttsVoice) u.voice = ttsVoice; u.rate = ttsRate();
+          u.onstart = () => (started = true);
+          u.onend = () => { started = true; next(); };
+          u.onerror = (e) => { if (gen !== ttsGen) return; if (e && (e.error === "interrupted" || e.error === "canceled")) return; if (!started) { fail(); return; } ttsKey = null; ttsMark(); };
+          try { speechSynthesis.speak(u); } catch (err) { fail(); }
+        };
+        next();
+        setTimeout(() => {
+          if (gen !== ttsGen || started) return;
+          let speaking = false, voices = [];
+          try { speaking = speechSynthesis.speaking; voices = speechSynthesis.getVoices() || []; } catch (e) {}
+          if (!voices.length || !speaking) fail();
+        }, 1500);
+      }
+      $app.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-tts]");
+        if (b) { e.preventDefault(); e.stopPropagation(); ttsSpeak(b.dataset.tts, b); return; }
+        const r = e.target.closest("[data-tts-rate]");
+        if (r) { P.ttsRate = RATES[(RATES.indexOf(ttsRate()) + 1) % RATES.length]; save(); $app.querySelectorAll("[data-tts-rate]").forEach((x) => (x.textContent = rateLabel())); }
+      });
+      if (canTTS) window.addEventListener("pagehide", () => { try { speechSynthesis.cancel(); } catch (e) {} });
+
+      function grade(s) {
+        const a = sp(s.id).answers; let r = 0;
+        s.questions.forEach((q) => { if (isRight(q, a[q.id])) r++; });
+        return r;
+      }
+      function band(p) {
+        const b = (QB.scoring && QB.scoring.bands) || [];
+        const i = p >= 70 ? 0 : p >= 65 ? 1 : p >= 55 ? 2 : 3;
+        return b[i] ? b[i].meaning : "";
+      }
+      function topTopics(n) {
+        const c = {};
+        QB.sections.forEach((s) => { const st = sp(s.id); if (!st.done) return;
+          s.questions.forEach((q) => { if (!isRight(q, st.answers[q.id])) c[q.study_topic] = (c[q.study_topic] || 0) + 1; }); });
+        return Object.entries(c).sort((a, b) => b[1] - a[1]).slice(0, n);
+      }
+      const words = (t) => (t.trim().match(/\S+/g) || []).length;
+
+      /* ---------- Start ---------- */
+      function renderStart() {
+        who = null;
+        show(`<section class="hero"><div class="hero__copy">
+          <p class="hero__eyebrow">For Uriah and Alana</p>
+          <h1>High School Equivalency Practice Test</h1>
+          <p class="hero__sub">Five sections modeled on the real GED and HiSET. Take them one at a time, at your own pace.</p>
+          <div class="x-start"><button class="btn" data-who="Uriah">I'm Uriah</button><button class="btn" data-who="Alana">I'm Alana</button></div>
+        </div></section>`);
+        $app.querySelectorAll("[data-who]").forEach((b) => (b.onclick = () => { who = b.dataset.who; P = load(who); renderDash(); }));
+      }
+
+      /* ---------- Dashboard ---------- */
+      function renderDash() {
+        const cards = QB.sections.map((s) => {
+          const st = sp(s.id), n = s.questions.length, a = Object.values(st.answers).filter((v) => !blank(v)).length;
+          let status, btn;
+          if (st.done) { const r = grade(s); status = `<span class="chip chip--solid">${pct(r, n)}%</span> ${r} of ${n} correct`; btn = `<button class="btn" data-review="${s.id}">Review</button>`; }
+          else if (a) { status = `<span class="chip">In progress</span> ${a} of ${n} answered`; btn = `<button class="btn" data-go="${s.id}">Resume</button>`; }
+          else { status = `<span class="chip">Not started</span> ${n} questions`; btn = `<button class="btn" data-go="${s.id}">Start</button>`; }
+          return `<div><h3>${esc(short(s.title))}</h3><p class="fineprint">${esc(sub(s.title))}</p><p>${status}</p><div class="links">${btn}</div></div>`;
+        });
+        const E = P.essay, w = words(E.text || "");
+        const tot = Object.values(E.scores || {}).reduce((x, y) => x + Number(y), 0);
+        const eStatus = E.done ? `<span class="chip chip--solid">Self-score ${tot} of 6</span> ${w} words` : w ? `<span class="chip">In progress</span> ${w} words` : `<span class="chip">Not started</span> 300 to 500 words`;
+        cards.push(`<div><h3>Essay</h3><p class="fineprint">Extended response, self-scored</p><p>${eStatus}</p><div class="links"><button class="btn" data-essay>${E.done ? "Review" : w ? "Resume" : "Start"}</button></div></div>`);
+
+        const done = QB.sections.filter((s) => sp(s.id).done);
+        let scores = "";
+        if (done.length) {
+          const rows = done.map((s) => { const r = grade(s), n = s.questions.length, p = pct(r, n);
+            return `<tr${p >= 65 ? "" : ""}><th scope="row">${esc(short(s.title))}</th><td class="num">${r}/${n}</td><td class="num">${p}%</td><td class="muted">${esc(band(p))}</td></tr>`; }).join("");
+          const tops = topTopics(3);
+          scores = `<section class="section" id="scores"><div class="head"><h2>Your scores so far</h2><p class="head__sub">About 65 to 70% or more on a section suggests a likely pass.</p></div>
+            <div class="table-wrap"><table><thead><tr><th scope="col">Section</th><th scope="col">Correct</th><th scope="col">Score</th><th scope="col">What it means</th></tr></thead><tbody>${rows}</tbody></table></div>
+            ${tops.length ? `<div class="cards" style="margin-top:20px"><div><h3>Top topics to study</h3><ol>${tops.map(([t, c]) => `<li>${esc(t)} <span class="pill">${c} missed</span></li>`).join("")}</ol></div></div>` : ""}</section>`;
+        }
+        show(`<section class="section" id="dash"><div class="head"><p class="head__eyebrow">Practice test</p><h2>Hi ${who}. Pick a section.</h2>
+            <p class="head__sub">No timers. Your answers save as you go. <a class="link" href="#" id="switch">Not ${who}? Switch person</a></p></div>
+          <div class="cards">${cards.join("")}</div></section>
+          ${scores}
+          <section class="section" id="backup"><div class="head"><h2>Back up or move your progress</h2><p class="head__sub">A backup code holds all of ${who}'s answers. Save it in your notes, or paste it on another device.</p></div>
+            <div class="links"><button class="btn" id="bk">Backup code</button><button class="btn" id="rs">Restore from code</button></div>
+            <div id="bkarea"></div></section>`);
+        $app.querySelector("#switch").onclick = (e) => { e.preventDefault(); renderStart(); };
+        $app.querySelectorAll("[data-go]").forEach((b) => (b.onclick = () => renderQ(b.dataset.go)));
+        $app.querySelectorAll("[data-review]").forEach((b) => (b.onclick = () => renderResults(b.dataset.review)));
+        $app.querySelector("[data-essay]").onclick = renderEssay;
+        $app.querySelector("#bk").onclick = () => {
+          const code = btoa(encodeURIComponent(JSON.stringify(P)));
+          $app.querySelector("#bkarea").innerHTML = `<p class="fineprint" style="margin-top:16px">${who}'s backup code</p><textarea class="x-input" rows="4" readonly id="bkcode">${esc(code)}</textarea><div class="links"><button class="btn" id="bkcopy">Copy code</button></div>`;
+          $app.querySelector("#bkcopy").onclick = (e) => copy(code, e.target);
+        };
+        $app.querySelector("#rs").onclick = () => {
+          $app.querySelector("#bkarea").innerHTML = `<p class="fineprint" style="margin-top:16px">Paste a backup code. It replaces ${who}'s current progress.</p><textarea class="x-input" rows="4" id="rscode"></textarea><div class="links"><button class="btn" id="rsgo">Restore</button></div><p class="fineprint" id="rsmsg"></p>`;
+          $app.querySelector("#rsgo").onclick = () => {
+            try { const d = JSON.parse(decodeURIComponent(atob($app.querySelector("#rscode").value.trim())));
+              if (!d || typeof d !== "object" || !d.sections) throw 0;
+              P = Object.assign(fresh(), d); save(); renderDash();
+            } catch (e) { $app.querySelector("#rsmsg").textContent = "That code didn't work. Check that you copied all of it."; }
+          };
+        };
+      }
+
+      /* ---------- Question ---------- */
+      function renderQ(id, idx) {
+        const s = sec(id), st = sp(id), n = s.questions.length;
+        if (idx !== undefined) st.idx = idx;
+        st.idx = Math.max(0, Math.min(n - 1, st.idx || 0));
+        const q = s.questions[st.idx], v = st.answers[q.id];
+        const pass = findPassage(s, q);
+        const answered = s.questions.filter((x) => !blank(st.answers[x.id])).length;
+        const opts = q.type === "mc"
+          ? `<ul class="x-opts">${q.choices.map((c, i) => `<li><button class="x-opt" data-c="${i}" aria-pressed="${Number(v) === i && !blank(v)}"><b>${L[i]}</b><span>${esc(c)}</span></button></li>`).join("")}</ul>`
+          : `<label class="fineprint" for="num">Type your answer</label><input class="x-input" id="num" inputmode="decimal" autocomplete="off" value="${esc(v || "")}" placeholder="Your answer" />`;
+        show(`<section class="section" id="q"><div class="head"><p class="head__eyebrow">${esc(short(s.title))}</p>
+            <div class="x-row"><span><span class="pill">Question ${st.idx + 1} of ${n}</span> ${q.no_calculator ? '<span class="chip">No calculator</span>' : ""}</span>
+            <span class="x-tts">${rateBtn()}${id === "math" ? '<button class="btn" id="fs">Formula sheet</button>' : ""}</span></div></div>
+          <div class="x-progress" aria-label="${answered} of ${n} answered"><span style="width:${pct(answered, n)}%"></span></div>
+          ${st.idx === 0 && s.instructions ? `<p class="fineprint" style="margin-bottom:16px">${esc(s.instructions)}</p>` : ""}
+          ${pass ? `<div class="x-passage"><div class="x-row"><strong>${esc(pass.title || "Passage")}</strong><span class="x-tts">${ttsBtn("passage", "🔊 Read passage")}<button class="btn" id="ptog" aria-expanded="true" aria-controls="pbody">Hide passage</button></span></div><div id="pbody">${pass.source ? `<small>${esc(pass.source)}</small>` : ""}${passageBody(pass.text)}</div></div>` : ""}
+          <div class="x-tts-row">${ttsBtn("question", "🔊 Read question")}</div>
+          <p class="x-prompt">${esc(q.prompt)}</p>${opts}
+          <div class="x-row"><button class="btn" id="prev" ${st.idx === 0 ? "disabled" : ""}>Previous</button><button class="btn" id="next">${st.idx === n - 1 ? "Review answers" : "Next"}</button></div>
+          <p class="fineprint">Jump to a question. Shaded ones are answered.</p>
+          <div class="x-grid">${s.questions.map((x, i) => `<button data-j="${i}" class="${blank(st.answers[x.id]) ? "" : "is-ans"} ${i === st.idx ? "is-cur" : ""}" aria-label="Question ${i + 1}">${i + 1}</button>`).join("")}</div>
+          <div class="links"><button class="btn" id="exit">Save &amp; exit</button><button class="btn" id="submit">Submit section</button></div></section>`);
+        if (pass) ttsTexts.passage = speakable((pass.title ? pass.title + "\n" : "") + pass.text);
+        ttsTexts.question = speakable(q.prompt) + (q.type === "mc" ? " " + q.choices.map((c, i) => `${L[i]}. ${speakable(c)}`).join(" ") : "");
+        $app.querySelectorAll("[data-c]").forEach((b) => (b.onclick = () => { st.answers[q.id] = Number(b.dataset.c); save(); renderQKeep(id); }));
+        const num = $app.querySelector("#num");
+        if (num) num.oninput = () => { st.answers[q.id] = num.value; save(); };
+        $app.querySelector("#prev").onclick = () => renderQ(id, st.idx - 1);
+        $app.querySelector("#next").onclick = () => (st.idx === n - 1 ? $app.querySelector(".x-grid").scrollIntoView({ behavior: "smooth", block: "center" }) : renderQ(id, st.idx + 1));
+        $app.querySelectorAll("[data-j]").forEach((b) => (b.onclick = () => renderQ(id, Number(b.dataset.j))));
+        $app.querySelector("#exit").onclick = () => { save(); renderDash(); };
+        $app.querySelector("#submit").onclick = () => {
+          const left = s.questions.filter((x) => blank(st.answers[x.id])).length;
+          if (confirm(left ? `You have ${left} unanswered question${left > 1 ? "s" : ""}. Submit anyway?` : "Submit this section?")) { st.done = true; save(); renderResults(id); }
+        };
+        const fs = $app.querySelector("#fs"); if (fs) fs.onclick = openFormulas;
+        const pt = $app.querySelector("#ptog");
+        const pb = $app.querySelector("#pbody");
+        if (pb) { pb.hidden = false; pt.textContent = "Hide passage"; pt.setAttribute("aria-expanded", "true"); }
+        if (pt) pt.onclick = () => { const b = $app.querySelector("#pbody"), open = b.hidden; b.hidden = !open; pt.textContent = open ? "Hide passage" : "Show passage"; pt.setAttribute("aria-expanded", String(open)); };
+        save();
+      }
+      function renderQKeep(id) { const y = window.scrollY; renderQ(id); window.scrollTo(0, y); }
+
+      function openFormulas() {
+        const fsd = QB.formula_sheet || [];
+        $modal.innerHTML = `<div class="x-row"><strong>Formula sheet</strong><button class="btn" id="mclose">Close</button></div>` +
+          (Array.isArray(fsd) ? fsd : [fsd]).map((c) => `<h3>${esc(c.category || "")}</h3>${c.note ? `<p class="fineprint">${esc(c.note)}</p>` : ""}<ul>${(c.formulas || []).map((f) => `<li>${esc(f.name)}: <strong>${esc(f.formula)}</strong></li>`).join("")}</ul>`).join("");
+        $modal.querySelector("#mclose").onclick = () => $modal.close();
+        $modal.showModal();
+      }
+      $modal.addEventListener("click", (e) => { if (e.target === $modal) $modal.close(); });
+
+      /* ---------- Results ---------- */
+      function renderResults(id) {
+        const s = sec(id), st = sp(id), n = s.questions.length, r = grade(s), p = pct(r, n);
+        const miss = s.questions.map((q, i) => [q, i]).filter(([q]) => !isRight(q, st.answers[q.id]));
+        const right = s.questions.map((q, i) => [q, i]).filter(([q]) => isRight(q, st.answers[q.id]));
+        const topics = [...new Set(miss.map(([q]) => q.study_topic))];
+        const item = ([q, i], wrong) => `<div class="x-review"><p class="fineprint">Question ${i + 1}${wrong && findPassage(s, q) ? ` · Passage: ${esc(findPassage(s, q).title || q.passage_id)}` : ""}</p><h3>${esc(q.prompt)}</h3>
+          ${wrong ? `<p>Your answer: <strong>${esc(fmt(q, st.answers[q.id]))}</strong></p>` : ""}
+          <p>Correct answer: <strong>${esc(q.type === "mc" ? fmt(q, q.answer) : q.answer)}</strong></p>
+          <p>${esc(q.explanation)}</p>
+          ${wrong ? `<div class="aside"><h3>Study this: ${esc(q.study_topic)}</h3><p class="fineprint">${esc(q.study_note)}</p></div>` : ""}</div>`;
+        show(`<section class="section" id="res"><div class="head"><p class="head__eyebrow">${who} · Results</p><h2>${esc(short(s.title))}</h2></div>
+          <section class="stats"><div class="stat"><span class="stat__fig">${r}/${n}</span><span class="stat__label">Correct</span></div>
+            <div class="stat"><span class="stat__fig">${p}%</span><span class="stat__label">Score</span></div>
+            <div class="stat"><span class="stat__fig">${miss.length}</span><span class="stat__label">To review</span></div></section>
+          <div class="prose"><p><strong>${esc(band(p))}</strong> Scoring about 65 to 70% or more suggests a likely pass on the real test.</p></div>
+          <div class="links" style="margin:16px 0"><button class="btn" id="retake">Retake section</button><button class="btn" id="copyres">Copy results summary</button><button class="btn" id="back">Back to dashboard</button></div></section>
+          <section class="section" id="missed"><div class="head"><h2>${miss.length ? "Missed or left blank" : "You got every question right."}</h2></div>
+            ${miss.map((x) => item(x, true)).join("")}
+            ${right.length ? `<details class="x-more"><summary>Correct answers (${right.length})</summary>${right.map((x) => item(x, false)).join("")}</details>` : ""}</section>`);
+        $app.querySelector("#retake").onclick = () => { if (confirm("Clear your answers for this section and start over?")) { P.sections[id] = { answers: {}, idx: 0, done: false }; save(); renderQ(id); } };
+        $app.querySelector("#back").onclick = renderDash;
+        $app.querySelector("#copyres").onclick = (e) => copy(`${who}: ${short(s.title)} practice\nScore: ${r}/${n} (${p}%)\n${topics.length ? "Topics to study:\n- " + topics.join("\n- ") : "No missed topics."}`, e.target);
+      }
+
+      /* ---------- Essay ---------- */
+      function renderEssay() {
+        const E = QB.essay, S = P.essay;
+        show(`<section class="section" id="essay"><div class="head"><p class="head__eyebrow">${who} · Essay</p><h2>${esc(E.title)}</h2><p class="head__sub">${esc(E.instructions)}</p></div>
+          <div class="x-tts-row">${rateBtn()}</div>
+          ${(E.passages || []).map((p, i) => `<details class="x-passage" open><summary>${esc(p.title)}</summary><div class="x-tts-row">${ttsBtn("ep" + i, "🔊 Read passage")}</div>${p.author ? `<small>${esc(p.author)}</small>` : ""}${paras(p.text)}</details>`).join("")}
+          <aside class="callout" aria-label="Prompt" style="margin-bottom:20px"><p class="callout__head">Prompt</p><p class="callout__lead">${esc(E.prompt)}</p>${ttsBtn("eprompt", "🔊 Read prompt")}</aside>
+          <label class="fineprint" for="etext">Your response</label>
+          <textarea class="x-text" id="etext" placeholder="Start writing here">${esc(S.text || "")}</textarea>
+          <div class="x-row"><span class="pill" id="wc">${words(S.text || "")} words</span><span class="fineprint">Aim for 300 to 500</span></div>
+          <div class="links"><button class="btn" id="eexit">Save &amp; exit</button><button class="btn" id="efin">${S.done ? "Show scoring" : "Finish"}</button></div></section>
+          <div id="escore"></div>`);
+        (E.passages || []).forEach((p, i) => (ttsTexts["ep" + i] = speakable([p.title, p.author, p.text].filter(Boolean).join("\n"))));
+        ttsTexts.eprompt = speakable(E.prompt);
+        const t = $app.querySelector("#etext");
+        t.oninput = () => { S.text = t.value; $app.querySelector("#wc").textContent = words(t.value) + " words"; save(); };
+        $app.querySelector("#eexit").onclick = () => { save(); renderDash(); };
+        $app.querySelector("#efin").onclick = () => { S.done = true; save(); renderEssayScore(); $app.querySelector("#escore").scrollIntoView({ behavior: "smooth" }); };
+        if (S.done) renderEssayScore();
+      }
+      function renderEssayScore() {
+        const E = QB.essay, S = P.essay; S.scores = S.scores || {}; S.checks = S.checks || [];
+        const total = () => Object.values(S.scores).reduce((x, y) => x + Number(y), 0);
+        const box = $app.querySelector("#escore");
+        box.innerHTML = `<section class="section" id="rubric"><div class="head"><h2>Score yourself, trait by trait.</h2><p class="head__sub">${esc(E.scoring_note || "")}</p></div>
+            ${(E.rubric || []).map((tr) => `<div class="x-review"><h3>Trait ${esc(tr.trait)}: ${esc(tr.name)}</h3>
+              ${Object.keys(tr.scores).sort().reverse().map((k) => `<p><strong>${k}</strong> · ${esc(tr.scores[k])}</p>`).join("")}
+              <div class="x-traits" role="radiogroup" aria-label="Score for trait ${esc(tr.trait)}">${Object.keys(tr.scores).sort().map((k) => `<label><input type="radio" name="t${tr.trait}" value="${k}" ${String(S.scores[tr.trait]) === k ? "checked" : ""}/>${k}</label>`).join("")}</div></div>`).join("")}
+            <section class="stats"><div class="stat"><span class="stat__fig" id="etot">${total()} / 6</span><span class="stat__label">Your self-score · 4 or more is a solid target</span></div></section></section>
+          <section class="section" id="selfcheck"><div class="head"><h2>Check your essay against this list.</h2></div>
+            ${(E.self_check || []).map((c, i) => `<label class="x-check"><input type="checkbox" data-ck="${i}" ${S.checks[i] ? "checked" : ""}/><span>${esc(c)}</span></label>`).join("")}</section>
+          <section class="section" id="outline"><div class="head"><h2>One strong way to organize it</h2><p class="head__sub">A model outline to compare with yours.</p></div>
+            <div class="prose"><ol>${(E.model_outline || []).map((o) => `<li><p>${esc(o)}</p></li>`).join("")}</ol></div>
+            <div class="links"><button class="btn" id="eback">Back to dashboard</button></div></section>`;
+        box.querySelectorAll("input[type=radio]").forEach((r) => (r.onchange = () => { S.scores[r.name.slice(1)] = Number(r.value); save(); box.querySelector("#etot").textContent = total() + " / 6"; }));
+        box.querySelectorAll("[data-ck]").forEach((c) => (c.onchange = () => { S.checks[c.dataset.ck] = c.checked; save(); }));
+        box.querySelector("#eback").onclick = renderDash;
+      }
+
+      renderStart();
+    </script>
+  <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js"));}</script>
+</body>
+</html>
